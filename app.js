@@ -10,9 +10,9 @@ const port = 3000;
 /*Serve the html files to the web*/
 app.use(express.static('www'));
 
-/**/
+/*When a user accesses the default landing page, send them to the index.html page*/
 app.get('/',
-    (req, res) => res.send('Hello World!')
+    (req, res) => res.send('index.html')
 );
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
