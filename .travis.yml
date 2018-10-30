@@ -1,3 +1,8 @@
 langauge: node_js
+sudo: false
 node_js:
-        - "node"
+  - "10"
+install:
+  - cd istanbul-mocha && npm install && cd ..
+script:
+  - cd istanbul-mocha && npm test
