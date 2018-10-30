@@ -2,7 +2,7 @@
   "name": "video-player-mmu",
   "version": "0.0.1",
   "description": "A HTML5 video player, using Javascript for interaction",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "mocha"
   },
@@ -23,5 +23,11 @@
   "bugs": {
     "url": "https://github.com/DemiKnight/video-player/issues"
   },
-  "homepage": "https://github.com/DemiKnight/video-player#readme"
+  "homepage": "https://github.com/DemiKnight/video-player#readme",
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
