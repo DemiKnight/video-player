@@ -1,0 +1,27 @@
+{
+  "name": "video-player-mmu",
+  "version": "0.0.1",
+  "description": "A HTML5 video player, using Javascript for interaction",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DemiKnight/video-player.git"
+  },
+  "keywords": [
+    "mocha",
+    "video",
+    "player",
+    "html5",
+    "university",
+    "mmu"
+  ],
+  "author": "Alex J Knight",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DemiKnight/video-player/issues"
+  },
+  "homepage": "https://github.com/DemiKnight/video-player#readme"
+}
