@@ -26,9 +26,18 @@
   },
   "homepage": "https://github.com/DemiKnight/video-player#readme",
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "gremlins.js": "^0.1.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.5"
   },
   "dependencies": {
     "express": "^4.16.4"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "test/*",
+      "resources/*"
+    ],
+    "delay": "2500"
   }
 }
