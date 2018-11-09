@@ -77,3 +77,8 @@ typings/
 
 # Webstorm
 .idea/
+
+# To stop large files being pushed to the remote repo.
+*.mp4
+*.webm
+*.jpg
