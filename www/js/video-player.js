@@ -37,13 +37,15 @@ function videoTogglePlay(videoE)
 }
 
 /**
- * Will toggle fullscreen, using the Fullscreen API [1,2].
+ * Will toggle fullscreen, using the Fullscreen API [1,2]. Need to find a better way of implementing this feature due to it being discontinued [3]
  *
  * TODO Find a way to overwrite default controls when in fullscreen mode.vid
  *
  * -1- 'Fullscreen API' (13/11/18), Mozilla Developer Network [online] Accessed 15/11/18 <https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API> ---
  * -2- 'Fullscreen API' (02/11/18), whatwg <https://fullscreen.spec.whatwg.org/> ---
- * @param videoE
+ * -3- 'Fullscreen' (18/11/14), W3C [online] Accessed 15/11/18 <https://www.w3.org/TR/fullscreen/> ---
+ * @param videoE The video to apply this function to.
+ * @deprecated
  */
 function videoToggleFullScreen(videoE) {
     console.log("Fullscreen");
@@ -59,21 +61,13 @@ function videoToggleFullScreen(videoE) {
     }
 }
 
-function videoSkipBackward(videoE)
-{
-    console.log("Backward");
-}
-function videoSkipBackwardStep(videoE)
-{
-    console.log("Backward Step");
-}
-function videoSkipForward(videoE)
-{
-    console.log("Forward");
-}
-function videoSkipForwardStep(videoE)
-{
-    console.log("Forward Step");
+/**
+ *
+ * @param videoE The video to modify
+ * @param {array} From index 1, the amount The amount of time to take/add.
+ */
+function videoSkip(videoE, amount) {
+    videoE.currentTime += amount[1]; // Adds the amount passed in to the function.
 }
 /**
  * Will add functionality to the buttons controlling the given video.
@@ -98,11 +92,12 @@ function addListeners(videoElement, videoControls)
      */
     function bindClick(element, functionTOAdd, ... funcToAddParamaters)
     {
+        console.log(funcToAddParamaters);
         // Bind to the 'click'
         element.addEventListener("click", function () {
             //Any excess parameters pass into function, should always include a reference to the video.
-            functionTOAdd(videoElement,...funcToAddParamaters);
-        })
+            functionTOAdd(videoElement, funcToAddParamaters);
+        });
     }
     // Iterate through each child tag of the visual controls, finding each button and then binding the relevant function.
     videoControls.childNodes.forEach((element) => {
@@ -124,19 +119,19 @@ function addListeners(videoElement, videoControls)
                 break;
             case "main-video-controls-backward":
                 console.log("Backward");
-                bindClick(element, videoSkipBackward, videoElement);
+                bindClick(element, videoSkip, videoElement, -10);
                 break;
             case "main-video-controls-backward-step":
                 console.log("Backward-Step");
-                bindClick(element, videoSkipBackwardStep, videoElement);
+                bindClick(element, videoSkip, videoElement, -1);
                 break;
             case "main-video-controls-forward":
                 console.log("Forward");
-                bindClick(element, videoSkipForward, videoElement);
+                bindClick(element, videoSkip, videoElement, 1);
                 break;
             case "main-video-controls-forward-step":
                 console.log("Forward-Step");
-                bindClick(element, videoSkipForwardStep, videoElement);
+                bindClick(element, videoSkip, videoElement, 10);
                 break;
         }
     });
