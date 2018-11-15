@@ -6,6 +6,32 @@ document.addEventListener("DOMContentLoaded", () => {
     addListeners(videoElement, videoElementControls)
 });
 
+function videoToggleMute(videoE)
+{
+    if(videoE !== undefined && videoE.muted )
+    {
+        videoE.mute();
+    }
+    {
+
+    }
+}
+
+function videoTogglePlay(videoE) 
+{
+    console.log(videoE);
+    if (videoE !== undefined && videoE.isPaused)
+    {
+        console.log("Toggling to play");
+        videoE.play();
+    }else if (videoE !== undefined)
+    {
+        console.log("Toggling to pause");
+        videoE.pause();
+    }else{
+        console.log(videoE);
+    }
+}
 /**
  * Will add functionality to the buttons controlling the given video.
  * @param videoElement Reference to the main video tag.
@@ -13,5 +39,25 @@ document.addEventListener("DOMContentLoaded", () => {
  */
 function addListeners(videoElement, videoControls)
 {
+    console.log(videoControls.childNodes);
+    videoControls.childNodes.forEach((element) => {
+        switch (element.id)
+        {
+            case "main-video-controls-play":
+                console.log("Play Button");
 
+
+                // element.addEventListener("click", console.log("click"));
+                element.addEventListener("click", videoTogglePlay(videoElement));
+                break;
+            case "main-video-controls-mute":
+                // console.log("Mute Button");
+                // console.log(element.node);
+                element.addEventListener("click", console.log("Hello"));
+                break;
+            case undefined:
+                break;
+        }
+
+    });
 }
