@@ -23,11 +23,11 @@ function videoTogglePlay(videoE)
     if (videoE !== undefined && videoE.isPaused)
     {
         console.log("Toggling to play");
-        videoE.play();
+        videoE.pause();
     }else if (videoE !== undefined)
     {
         console.log("Toggling to pause");
-        videoE.pause();
+        videoE.play();
     }else{
         console.log(videoE);
     }
@@ -39,22 +39,24 @@ function videoTogglePlay(videoE)
  */
 function addListeners(videoElement, videoControls)
 {
-    console.log(videoControls.childNodes);
+    // console.log(videoControls.childNodes);
     videoControls.childNodes.forEach((element) => {
         switch (element.id)
         {
             case "main-video-controls-play":
-                // console.log("Play Button");
-
-                console.log(element);
+                // console.log(element);
                 // element.addEventListener("click", console.log("click"));
                 // element.addEventListener("click", videoTogglePlay(videoElement));
-                document.getElementById("main-video-controls-play").addEventListener("click", videoTogglePlay(videoElement));
+                element.addEventListener("click", function(){
+                    videoTogglePlay(videoElement);
+                });
                 break;
             case "main-video-controls-mute":
                 // console.log("Mute Button");
                 // console.log(element);
-                // element.addEventListener("click", console.log("Hello"));
+                element.addEventListener("click", function () {
+                    videoToggleMute(videoElement);
+                });
                 break;
             case undefined:
                 break;
