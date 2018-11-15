@@ -10,10 +10,10 @@ function videoToggleMute(videoE)
 {
     if(videoE !== undefined && videoE.muted )
     {
-        videoE.mute();
+        videoE.muted = false;
     }
     {
-
+        videoE.muted = true;
     }
 }
 
@@ -44,16 +44,17 @@ function addListeners(videoElement, videoControls)
         switch (element.id)
         {
             case "main-video-controls-play":
-                console.log("Play Button");
+                // console.log("Play Button");
 
-
+                console.log(element);
                 // element.addEventListener("click", console.log("click"));
-                element.addEventListener("click", videoTogglePlay(videoElement));
+                // element.addEventListener("click", videoTogglePlay(videoElement));
+                document.getElementById("main-video-controls-play").addEventListener("click", videoTogglePlay(videoElement));
                 break;
             case "main-video-controls-mute":
                 // console.log("Mute Button");
-                // console.log(element.node);
-                element.addEventListener("click", console.log("Hello"));
+                // console.log(element);
+                // element.addEventListener("click", console.log("Hello"));
                 break;
             case undefined:
                 break;
