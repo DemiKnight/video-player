@@ -35,8 +35,28 @@ function videoTogglePlay(videoE)
         videoE.pause();
     }
 }
+
+/**
+ * Will toggle fullscreen, using the Fullscreen API [1,2].
+ *
+ * TODO Find a way to overwrite default controls when in fullscreen mode.vid
+ *
+ * -1- 'Fullscreen API' (13/11/18), Mozilla Developer Network [online] Accessed 15/11/18 <https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API> ---
+ * -2- 'Fullscreen API' (02/11/18), whatwg <https://fullscreen.spec.whatwg.org/> ---
+ * @param videoE
+ */
 function videoToggleFullScreen(videoE) {
-    console.log("Fullscreen")
+    console.log("Fullscreen");
+    if(!videoE.fullscreenElement)
+    {
+        if(videoE.requestFullscreen !== undefined) videoE.requestFullscreen();
+        if(videoE.webkitRequestFullScreen !== undefined) videoE.webkitRequestFullScreen();
+    }
+    else
+    {
+        if(videoE.exitFullscreen !== undefined) videoE.exitFullscreen();
+        if(videoE.webkitExitFullscreen() !== undefined) videoE.webkitExitFullscreen();
+    }
 }
 
 function videoSkipBackward(videoE)
