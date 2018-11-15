@@ -82,3 +82,6 @@ typings/
 *.mp4
 *.webm
 *.jpg
+
+# MMU Documents will be kept here:
+docsMMU/

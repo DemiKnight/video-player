@@ -7,9 +7,10 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-/*Serve the html files to the web*/
+/*Serve the html, css & JS files to the web*/
 app.use(express.static('www'));
-
+//Host all media types.
+app.use(express.static('resources'));
 /*When a user accesses the default landing page, send them to the index.html page*/
 app.get('/',
     (req, res) => res.send('index.html')
