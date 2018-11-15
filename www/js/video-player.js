@@ -8,28 +8,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function videoToggleMute(videoE)
 {
-    if(videoE !== undefined && videoE.muted )
-    {
-        videoE.muted = false;
+    if(videoE === undefined) {
+        //Stop the function if the video is null/undefined, will stop errors occurring in the chat.
+        console.log(videoE);
+        return;
     }
-    {
-        videoE.muted = true;
-    }
+    //Toggle the mute
+    videoE.muted = !videoE.muted;
 }
 
 function videoTogglePlay(videoE) 
 {
-    console.log(videoE);
-    if (videoE !== undefined && videoE.isPaused)
-    {
-        console.log("Toggling to play");
-        videoE.pause();
-    }else if (videoE !== undefined)
-    {
-        console.log("Toggling to pause");
-        videoE.play();
-    }else{
+    if(videoE === undefined) {
+        //Stop the function if the video is null/undefined, will stop errors occurring in the chat.
         console.log(videoE);
+        return;
+    }
+    if (videoE.paused)
+    {
+        videoE.play();
+    }
+    else
+    {
+        videoE.pause();
     }
 }
 /**
@@ -39,28 +40,20 @@ function videoTogglePlay(videoE)
  */
 function addListeners(videoElement, videoControls)
 {
-    // console.log(videoControls.childNodes);
+    // Iterate through each child tag of the visual controls, finding each button and then binding the relevant function.
     videoControls.childNodes.forEach((element) => {
         switch (element.id)
         {
             case "main-video-controls-play":
-                // console.log(element);
-                // element.addEventListener("click", console.log("click"));
-                // element.addEventListener("click", videoTogglePlay(videoElement));
-                element.addEventListener("click", function(){
-                    videoTogglePlay(videoElement);
-                });
+                // The Play button.
+                element.addEventListener("click", function () { videoTogglePlay(videoElement); });
                 break;
             case "main-video-controls-mute":
-                // console.log("Mute Button");
-                // console.log(element);
-                element.addEventListener("click", function () {
-                    videoToggleMute(videoElement);
-                });
+                // The mute button
+                element.addEventListener("click", function () { videoToggleMute(videoElement); });
                 break;
             case undefined:
                 break;
         }
-
     });
 }
