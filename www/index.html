@@ -19,14 +19,15 @@
             <h1>This is an example</h1>
         </header>
         <main>
-            <video class="main-video" controls width="640" height="360" poster="image/jpeg/poster.jpg">
+            <video id="main-video" controls width="640" height="360" poster="image/jpeg/poster.jpg">
                 <source src="video/mp4/mmu.mp4">
                 <source src="video/webm/MMU.webm">
                 <p>Browser does not support HTML5 video playback. Try using a modern browser like <a href="https://vivaldi.com">Vivaldi</a></p>
             </video>
             <!-- Attempting to not use ID's for controls which may limit amount of videos on the same page -->
-            <div class="main-video-controls">
-                <button type="button" class="main-video-controls-play">Play</button>
+            <div id="main-video-controls">
+                <button type="button" id="main-video-controls-play">Play</button>
+                <button type="button" id="main-video-controls-mute">Mute</button>
             </div>
         </main>
     </body>
