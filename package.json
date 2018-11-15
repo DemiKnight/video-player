@@ -1,6 +1,6 @@
 {
   "name": "video-player-mmu",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A HTML5 video player, using Javascript for interaction",
   "main": "app.js",
   "scripts": {
