@@ -31,7 +31,8 @@
     "nodemon": "^1.18.5"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "material-design-icons": "^3.0.1"
   },
   "nodemonConfig": {
     "ignore": [
