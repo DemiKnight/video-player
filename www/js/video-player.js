@@ -28,7 +28,7 @@ function videoToggleMute(videoElement)
 }
 
 /**
- * Will play or pause
+ * Will will toggle between pause and play for the specified video.
  * @param {HTMLMediaElement} videoElement
  */
 function videoTogglePlay(videoElement)
@@ -114,8 +114,8 @@ function addListeners(videoElement, videoControls)
     /**
      * Used to bind the video control buttons to the correct video and functionality.
      *
-     * Using the Spread operator to take in excess parameters that will then be passed to the given function. Refereed to [1] when
-     * trying to fix the issue from the previous commit 'ccc85c7f51ca3f8bd762bd0d1a75137fd71d3009'
+     * Using the Spread operator [1] to take in excess parameters that will then be passed to the given function.
+     *
      * -1- 'Spread syntax' (13-11-18), Mozilla Developer Network [online] Accessed 15/11/18 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax> ---
      *
      * @param {ChildNode} element Button to bind
@@ -132,6 +132,13 @@ function addListeners(videoElement, videoControls)
         });
     }
 
+    /**
+     * Used to add the double click event to a specified input device.
+     *
+     * @param {ChildNode} element Input element to add event.
+     * @param {function} functionToCall Function to call when event is fired.
+     * @param {... args} funcToAddParamaters Paramaters to pass to the functionToCall
+     */
     function bindDoubleClick(element, functionToCall, ... funcToAddParamaters)
     {
         element.addEventListener("dblclick", () =>
