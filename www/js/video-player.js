@@ -3,22 +3,21 @@ document.addEventListener("DOMContentLoaded", () =>
     const videoElement = document.getElementById("main-video");
     const videoElementControls = document.getElementById("main-video-controls");
 
-    addListeners(videoElement, videoElementControls)
+    addListeners(videoElement, videoElementControls);
 });
 
 function videoToggleMute(videoE)
 {
-    if(videoE === undefined)
-    {
+    if (videoE !== undefined) {
+        videoE.muted = !videoE.muted;
+    } else {
         //Stop the function if the video is null/undefined, will stop errors occurring in the chat.
         console.error(videoE);
-        return;
     }
     //Toggle the mute
-    videoE.muted = !videoE.muted;
 }
 
-function videoTogglePlay(videoE) 
+function videoTogglePlay(videoE)
 {
     if(videoE === undefined)
     {
@@ -94,7 +93,7 @@ function addListeners(videoElement, videoControls)
     {
         console.log(funcToAddParamaters);
         // Bind to the 'click'
-        element.addEventListener("click", function () {
+        element.addEventListener("click", () => {
             //Any excess parameters pass into function, should always include a reference to the video.
             functionTOAdd(videoElement, funcToAddParamaters);
         });
