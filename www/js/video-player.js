@@ -81,9 +81,23 @@ function videoVolumeChange(videoE, amount)
     videoE.volume = amount;
 }
 
-function videoLocationSlider(videoE, target)
+/**
+ *
+ * @param videoElement
+ * @param target
+ */
+function videoLocationSlider(videoElement, target)
 {
-    videoE.currentTime = videoE.duration * (target/100);
+    videoElement.currentTime = (videoElement.duration * (target/100));
+}
+
+/**
+ * Change inner HTML of a element to the current value of an input
+ * @param {HTMLElement} elementToWatch Input element
+ * @param {HTMLInputElement} valueToChangeTo
+ */
+function videoVolumeValueChange(elementToWatch, valueToChangeTo) {
+    elementToWatch.innerHTML = (Math.round(valueToChangeTo.value * 100)).toString() ;
 }
 
 /**
@@ -119,14 +133,22 @@ function addListeners(videoElement, videoControls)
     /**
      * Binds functions relevant to the slider value changing.
      *
-     * @param element The (slider input) element to bind the function to.
+     * @param {HTMLInputElement} element The (slider input) element to bind the function to.
      * @param functionToAdd The function to call when event is fired.
+     * @param {function} functionOnChange
+     * @param functionValues 
      */
-    function bindSlider(element, functionToAdd)
+    function bindSlider(element, functionToAdd, functionOnChange, ... functionValues)
     {
         element.addEventListener("input", () => {
             functionToAdd(videoElement, element.value);
         });
+
+        //If there is no function provided, don't add the change Event.
+        if(functionOnChange!==undefined)
+            element.addEventListener("change", () => {
+                functionOnChange( ... functionValues)
+            });
     }
 
     /**
@@ -139,7 +161,6 @@ function addListeners(videoElement, videoControls)
     function bindLoad(element, elementToCheck, defaultValueObject)
     {
         elementToCheck.addEventListener("loadeddata", () => {
-            console.log(element);
             // element = Object.assign(element,defaultValueObject);
             const tempjsonStore = Object.entries(defaultValueObject);
             // with(element){
@@ -187,14 +208,17 @@ function addListeners(videoElement, videoControls)
                 bindClick(element, videoSkip, videoElement, 10);
                 break;
             case "main-video-controls-volumeSlider":
-                console.log("Volume Slider");
 
-                bindSlider(element,videoVolumeChange);
+                bindSlider(
+                    element.firstElementChild,
+                    videoVolumeChange,
+                    videoVolumeValueChange,
+                    element.children.namedItem("main-video-controls-volumeSlider-value"),
+                    element.firstElementChild);
+                videoVolumeValueChange(element.children.namedItem("main-video-controls-volumeSlider-value"),element.firstElementChild);
                 break;
 
             case "main-video-controls-locationSlider":
-                //Todo Validate whether this works.
-
                 // bindLoad(element, videoElement,{
                 //     max: (videoElement) => {
                 //         return videoElement.duration;
@@ -203,7 +227,7 @@ function addListeners(videoElement, videoControls)
                 //         return videoElement.duration/100;
                 //     }
                 // });
-                bindSlider(element, videoLocationSlider);
+                bindSlider(element.firstElementChild, videoLocationSlider);
                 break;
         }
     });
