@@ -70,12 +70,13 @@ function videoSkip(videoE, amount) {
 }
 
 /**
- *
- * @param videoE
- * @param amount
+ * Changes the volume based on the amount given.
+ * @param videoE The video element to change.
+ * @param amount The value to change the volume to.
  */
-function videoVolumeChange(videoE, amount) {
-
+function videoVolumeChange(videoE, amount)
+{
+    videoE.volume = amount;
 }
 
 /**
@@ -108,6 +109,20 @@ function addListeners(videoElement, videoControls)
             functionTOAdd(videoElement, funcToAddParamaters);
         });
     }
+
+    /**
+     * Binds functions relevant to the slider value changing.
+     *
+     * @param element The (slider input) element to bind the function to.
+     * @param functionToAdd The function to call when event is fired.
+     */
+    function bindSlider(element, functionToAdd)
+    {
+        element.addEventListener("input", () => {
+            functionToAdd(videoElement, element.value);
+        });
+    }
+
     // Iterate through each child tag of the visual controls, finding each button and then binding the relevant function.
     videoControls.childNodes.forEach((element) => {
         switch (element.id)
@@ -141,6 +156,10 @@ function addListeners(videoElement, videoControls)
             case "main-video-controls-forward-step":
                 console.log("Forward-Step");
                 bindClick(element, videoSkip, videoElement, 10);
+                break;
+            case "main-video-controls-slider":
+                console.log("Volume Slider");
+                bindSlider(element,videoVolumeChange)
                 break;
         }
     });
