@@ -3,7 +3,10 @@ document.addEventListener("DOMContentLoaded", () =>
     const videoElement = document.getElementById("main-video");
     const videoElementControls = document.getElementById("main-video-controls");
 
-    addListeners(videoElement, videoElementControls);
+    //Make sure all the video information can be accessed first.
+    videoElement.addEventListener("loadeddata", () => {
+        addListeners(videoElement, videoElementControls);
+    });
 });
 
 function videoToggleMute(videoE)
@@ -47,7 +50,6 @@ function videoTogglePlay(videoE)
  * @deprecated
  */
 function videoToggleFullScreen(videoE) {
-    console.log("Fullscreen");
     if(!videoE.fullscreenElement)
     {
         if(videoE.requestFullscreen !== undefined) videoE.requestFullscreen();
@@ -66,7 +68,8 @@ function videoToggleFullScreen(videoE) {
  * @param {array} From index 1, the amount The amount of time to take/add.
  */
 function videoSkip(videoE, amount) {
-    videoE.currentTime += amount[1]; // Adds the amount passed in to the function.
+    console.log(amount);
+    videoE.currentTime += amount; // Adds the amount passed in to the function.
 }
 /**
  * Will add functionality to the buttons controlling the given video.
@@ -74,7 +77,7 @@ function videoSkip(videoE, amount) {
  * This function also makes use of closure[1] (specifically Lexical scoping) to reduce repeated code and make user of variables in scope.
  *
  * -1- 'Closures' (28/05/2018), Mozilla Developer Network [online] 15/11/18 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures>
- * @param videoElement Reference to the main video tag.
+ * @param {HTMLMediaElement} videoElement Reference to the main video tag.
  * @param videoControls Reference to the controls for the previous video.
  */
 function addListeners(videoElement, videoControls)
@@ -91,13 +94,25 @@ function addListeners(videoElement, videoControls)
      */
     function bindClick(element, functionTOAdd, ... funcToAddParamaters)
     {
-        console.log(funcToAddParamaters);
         // Bind to the 'click'
         element.addEventListener("click", () => {
             //Any excess parameters pass into function, should always include a reference to the video.
-            functionTOAdd(videoElement, funcToAddParamaters);
+            functionTOAdd(videoElement, ... funcToAddParamaters);
         });
+
+        // if(typeof functionOnDoubleClick === "function")
+        // element.addEventListener("dblclick", () => {
+        //     functionOnDoubleClick(videoElement, ... funcToAddParamaters)
+        // })
     }
+
+    function bindDoubleClick(element, functionToCall, ... funcToAddParamaters)
+    {
+        element.addEventListener("dblclick", () => {
+                functionToCall(videoElement, ... funcToAddParamaters)
+            });
+    }
+
     // Iterate through each child tag of the visual controls, finding each button and then binding the relevant function.
     videoControls.childNodes.forEach((element) => {
         switch (element.id)
@@ -117,20 +132,16 @@ function addListeners(videoElement, videoControls)
                 bindClick(element, videoToggleFullScreen, videoElement);
                 break;
             case "main-video-controls-backward":
-                console.log("Backward");
-                bindClick(element, videoSkip, videoElement, -10);
+                // console.log("Backward");
+                bindClick(element, videoSkip, -10);
+                bindDoubleClick(element, videoSkip, -(videoElement.duration - videoElement.currentTime));
                 break;
-            case "main-video-controls-backward-step":
-                console.log("Backward-Step");
-                bindClick(element, videoSkip, videoElement, -1);
-                break;
+
+
             case "main-video-controls-forward":
-                console.log("Forward");
-                bindClick(element, videoSkip, videoElement, 1);
-                break;
-            case "main-video-controls-forward-step":
-                console.log("Forward-Step");
-                bindClick(element, videoSkip, videoElement, 10);
+                console.log(videoElement.duration);
+                bindClick(element, videoSkip, 10);
+                bindDoubleClick(element, videoSkip, videoElement.currentTime + (0.25 * videoElement.duration) );
                 break;
         }
     });
