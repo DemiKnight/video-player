@@ -1,8 +1,21 @@
+let video = {
+    paused: true,
+    timeStamp: 0,
+    mute:true,
+    speed:1,
+    captionsEnabled: true,
+    autoPlay: true,
+    pauseOnLeave: true
+};
+
 document.addEventListener("DOMContentLoaded", () =>
 {
     const videoElement = document.getElementById("main-video");
     const videoElementControls = document.getElementById("main-video-controls");
 
+    let currentVideo = video;
+
+    currentVideo.mute.bind(videoElement.muted);
     addListeners(videoElement, videoElementControls)
 });
 
@@ -14,6 +27,7 @@ function videoToggleMute(videoE)
         console.error(videoE);
         return;
     }
+
     //Toggle the mute
     videoE.muted = !videoE.muted;
 }
@@ -106,33 +120,43 @@ function addListeners(videoElement, videoControls)
             case "main-video-controls-play":
                 // The Play button.
                 bindClick(element, videoTogglePlay,videoElement);
-                // element.addEventListener("click", function () { videoTogglePlay(videoElement); });
                 break;
+
+
             case "main-video-controls-mute":
                 // The mute button
                 bindClick(element, videoToggleMute, videoElement);
-                // element.addEventListener("click", function () { videoToggleMute(videoElement); });
                 break;
+
+
             case "main-video-controls-fullscreen":
                 console.log("Full-screen");
                 bindClick(element, videoToggleFullScreen, videoElement);
                 break;
+
+
             case "main-video-controls-backward":
                 console.log("Backward");
                 bindClick(element, videoSkip, videoElement, -10);
                 break;
+
             case "main-video-controls-backward-step":
                 console.log("Backward-Step");
                 bindClick(element, videoSkip, videoElement, -1);
                 break;
+
             case "main-video-controls-forward":
                 console.log("Forward");
                 bindClick(element, videoSkip, videoElement, 1);
                 break;
+
+
             case "main-video-controls-forward-step":
                 console.log("Forward-Step");
                 bindClick(element, videoSkip, videoElement, 10);
                 break;
+
+
         }
     });
 }
