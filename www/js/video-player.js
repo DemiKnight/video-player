@@ -63,11 +63,21 @@ function videoToggleFullScreen(videoE) {
 /**
  *
  * @param videoE The video to modify
- * @param {array} From index 1, the amount The amount of time to take/add.
+ * @param {array} amount index 1, the amount The amount of time to take/add.
  */
 function videoSkip(videoE, amount) {
     videoE.currentTime += amount[1]; // Adds the amount passed in to the function.
 }
+
+/**
+ *
+ * @param videoE
+ * @param amount
+ */
+function videoVolumeChange(videoE, amount) {
+
+}
+
 /**
  * Will add functionality to the buttons controlling the given video.
  *
