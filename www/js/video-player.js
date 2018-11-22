@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () =>
     const videoElement = document.getElementById("main-video");
     const videoElementControls = document.getElementById("main-video-controls");
 
+    console.log(videoElement.duration);
+
     addListeners(videoElement, videoElementControls);
 });
 
@@ -79,8 +81,13 @@ function videoVolumeChange(videoE, amount)
     videoE.volume = amount;
 }
 
+function videoLocationSlider(videoE, target)
+{
+    videoE.currentTime = videoE.duration * (target/100);
+}
+
 /**
- * Will add functionality to the buttons controlling the given video.
+ * Will add functionality to the controls for the given video. Will also set values for the input controls based on the video.
  *
  * This function also makes use of closure[1] (specifically Lexical scoping) to reduce repeated code and make user of variables in scope.
  *
@@ -102,7 +109,6 @@ function addListeners(videoElement, videoControls)
      */
     function bindClick(element, functionTOAdd, ... funcToAddParamaters)
     {
-        console.log(funcToAddParamaters);
         // Bind to the 'click'
         element.addEventListener("click", () => {
             //Any excess parameters pass into function, should always include a reference to the video.
@@ -120,6 +126,29 @@ function addListeners(videoElement, videoControls)
     {
         element.addEventListener("input", () => {
             functionToAdd(videoElement, element.value);
+        });
+    }
+
+    /**
+     * Will apply default values to a element, when a given element has fully loaded.
+     *  TODO WIP Make this work
+     * @param element
+     * @param elementToCheck
+     * @param defaultValueObject
+     */
+    function bindLoad(element, elementToCheck, defaultValueObject)
+    {
+        elementToCheck.addEventListener("loadeddata", () => {
+            console.log(element);
+            // element = Object.assign(element,defaultValueObject);
+            const tempjsonStore = Object.entries(defaultValueObject);
+            // with(element){
+            //      for (const [propertyToChange, valueToChangeWith] in defaultValueObject)
+            //      {
+            //          propertyToChange.valueOf() = valueToChangeWith;
+            //      }
+            // }
+            console.log(element);
         });
     }
 
@@ -157,9 +186,24 @@ function addListeners(videoElement, videoControls)
                 console.log("Forward-Step");
                 bindClick(element, videoSkip, videoElement, 10);
                 break;
-            case "main-video-controls-slider":
+            case "main-video-controls-volumeSlider":
                 console.log("Volume Slider");
-                bindSlider(element,videoVolumeChange)
+
+                bindSlider(element,videoVolumeChange);
+                break;
+
+            case "main-video-controls-locationSlider":
+                //Todo Validate whether this works.
+
+                // bindLoad(element, videoElement,{
+                //     max: (videoElement) => {
+                //         return videoElement.duration;
+                //     },
+                //     step: (videoElement) => {
+                //         return videoElement.duration/100;
+                //     }
+                // });
+                bindSlider(element, videoLocationSlider);
                 break;
         }
     });
