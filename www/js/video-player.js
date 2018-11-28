@@ -183,7 +183,7 @@ function addListeners(videoElement, videoControls)
      * @param {HTMLInputElement} element The (slider input) element to bind the function to.
      * @param functionToAdd The function to call when event is fired.
      * @param {function} functionOnChange
-     * @param functionValues 
+     * @param functionValues
      */
     function bindSlider(element, functionToAdd, functionOnChange, ... functionValues)
     {
@@ -267,14 +267,6 @@ function addListeners(videoElement, videoControls)
 
                 bindDoubleClick(element, videoTimeStampAdder, videoElement.currentTime + (0.25 * videoElement.duration) );
 
-                break;
-            case "main-video-controls-forward":
-                console.log("Forward");
-                bindClick(element, videoSkip, videoElement, 1);
-                break;
-            case "main-video-controls-forward-step":
-                console.log("Forward-Step");
-                bindClick(element, videoSkip, videoElement, 10);
                 break;
             case "main-video-controls-volumeSlider":
 
