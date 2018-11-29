@@ -1,3 +1,9 @@
+/**
+ * [1] Suggestions to reduce the amount of code to improve readability and speed.
+ *
+ * -1- J Evans, Loreto Sixth Form College, Code-Up Stockport (26/11/2018) ---
+ */
+
 document.addEventListener("DOMContentLoaded", () =>
 {
     const videoElement = document.getElementById("main-video");
