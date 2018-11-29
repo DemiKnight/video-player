@@ -19,7 +19,7 @@
             <h1>This is an example</h1>
         </header>
         <main>
-            <video id="main-video" width="640" height="360" poster="image/jpeg/poster.jpg">
+            <video controls id="main-video" width="640" height="360" poster="image/jpeg/poster.jpg">
                 <source src="video/mp4/mmu.mp4">
                 <source src="video/webm/MMU.webm">
                 <p>Browser does not support HTML5 video playback. Try using a modern browser like <a href="https://vivaldi.com">Vivaldi</a></p>
@@ -35,6 +35,7 @@
                 <button type="button" id="main-video-controls-fullscreen">Full-Screen</button>
                 <button type="button" id="main-video-controls-backward">Backward</button>
                 <button type="button" id="main-video-controls-forward">Forward</button>
+
                 <div id="main-video-controls-volumeSlider">
                     <input type="range" id="main-video-controls-volumeSlider-input" min="0" max="1" step="0.01" value="1">
                     <span id="main-video-controls-volumeSlider-value">0</span>

@@ -193,6 +193,7 @@ function addListeners(videoElement, videoControls)
      * @param functionToAdd The function to call when event is fired.
      * @param {function} functionOnChange
      * @param functionValues
+     * @deprecated
      */
     function bindSlider(element, functionToAdd, functionOnChange, ... functionValues)
     {
@@ -205,28 +206,6 @@ function addListeners(videoElement, videoControls)
             element.addEventListener("change", () => {
                 functionOnChange( ... functionValues)
             });
-    }
-
-    /**
-     * Will apply default values to a element, when a given element has fully loaded.
-     *  TODO WIP Make this work
-     * @param element
-     * @param elementToCheck
-     * @param defaultValueObject
-     */
-    function bindLoad(element, elementToCheck, defaultValueObject)
-    {
-        elementToCheck.addEventListener("loadeddata", () => {
-            // element = Object.assign(element,defaultValueObject);
-            const tempjsonStore = Object.entries(defaultValueObject);
-            // with(element){
-            //      for (const [propertyToChange, valueToChangeWith] in defaultValueObject)
-            //      {
-            //          propertyToChange.valueOf() = valueToChangeWith;
-            //      }
-            // }
-            console.log(element);
-        });
     }
 
     // Iterate through each child tag of the visual controls, finding each button and then binding the relevant function.
@@ -257,6 +236,7 @@ function addListeners(videoElement, videoControls)
                 break;
             case "main-video-controls-mute": // The mute button
 
+                //Todo When mute is active set slider to 0
                 element.addEventListener("click", ()=>{toggleVideoMute(videoElement);});
 
                 break;
@@ -293,6 +273,17 @@ function addListeners(videoElement, videoControls)
                 break;
             case "main-video-controls-volumeSlider":
 
+
+                // TODO When volume slider is at 0, toggle mute icon.
+                // element.children[0].addEventListener("input", () =>
+                // {
+                //     if(element.children[0].value === 0)
+                //     {
+                //         videoElement
+                //     }
+                //
+                // });
+
                 bindSlider(
                     element.firstElementChild,
                     videoVolumeChange,
@@ -303,14 +294,21 @@ function addListeners(videoElement, videoControls)
                 break;
 
             case "main-video-controls-locationSlider":
-                // bindLoad(element, videoElement,{
-                //     max: (videoElement) => {
-                //         return videoElement.duration;
-                //     },
-                //     step: (videoElement) => {
-                //         return videoElement.duration/100;
-                //     }
-                // });
+
+                // console.log(element.firstChild);
+                // console.log(element.children[0].max);
+                element.children[0].max = Math.round(videoElement.duration);
+
+                videoElement.addEventListener("timeupdate", () =>
+                {
+                    element.children[0].value = videoElement.currentTime;
+                });
+
+                element.children[0].addEventListener("input", () =>
+                {
+                    videoElement.currentTime = element.children[0].value;
+                });
+
                 bindSlider(element.firstElementChild, videoLocationSlider);
                 break;
         }
