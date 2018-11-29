@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () =>
  * Will toggle the muted state of the video.
  * @param {HTMLMediaElement} videoElement Video to toggle the mute on.
  */
-function videoToggleMute(videoElement)
+function toggleVideoMute(videoElement)
 {
     //As a precaution, stop anything other than a video element from being "muted". In case another developer uses this function incorrectly.
     if (videoElement instanceof HTMLMediaElement)
@@ -37,7 +37,7 @@ function videoToggleMute(videoElement)
  * Will will toggle between pause and play for the specified video.
  * @param {HTMLMediaElement} videoElement
  */
-function videoTogglePlay(videoElement)
+function toggleVideoPlay(videoElement)
 {
     if(videoElement instanceof HTMLMediaElement)
     {
@@ -79,7 +79,7 @@ function videoTogglePlay(videoElement)
  * -3- 'Fullscreen' (18/11/14), W3C [online] Accessed 15/11/18 <https://www.w3.org/TR/fullscreen/> ---
  * @param {HTMLMediaElement} videoElement The video to apply this function to.
  */
-function videoToggleFullScreen(videoElement) {
+function toggleVideoFullScreen(videoElement) {
     if(videoElement instanceof HTMLMediaElement)
     {
         if(!videoElement.fullscreenElement)
@@ -100,6 +100,7 @@ function videoToggleFullScreen(videoElement) {
  *
  * @param {HTMLMediaElement} videoElement The video to modify
  * @param {int} changeAmount index 1, the changeAmount The changeAmount of time to take/add.
+ * @deprecated
  */
 function videoTimeStampAdder(videoElement, changeAmount)
 {
@@ -127,6 +128,7 @@ function addListeners(videoElement, videoControls)
      * @param {ChildNode} element Button to bind
      * @param {function} functionTOAdd The function to call when the button is clicked.
      * @param funcToAddParamaters The parameters to pass to the aforementioned function. Needs to include the video reference.
+     * @deprecated
      */
     function bindClick(element, functionTOAdd, ... funcToAddParamaters)
     {
@@ -144,6 +146,7 @@ function addListeners(videoElement, videoControls)
      * @param {ChildNode} element Input element to add event.
      * @param {function} functionToCall Function to call when event is fired.
      * @param {... args} funcToAddParamaters Paramaters to pass to the functionToCall
+     * @deprecated
      */
     function bindDoubleClick(element, functionToCall, ... funcToAddParamaters)
     {
@@ -175,32 +178,45 @@ function addListeners(videoElement, videoControls)
         {
             case "main-video-controls-play": // The Play button.
 
-                element.addEventListener("click", ()=>{videoTogglePlay(videoElement);});
+                element.addEventListener("click", ()=>{toggleVideoPlay(videoElement);});
 
 
                 break;
             case "main-video-controls-mute": // The mute button
 
-                element.addEventListener("click", ()=>{videoToggleMute(videoElement);});
+                element.addEventListener("click", ()=>{toggleVideoMute(videoElement);});
 
                 break;
             case "main-video-controls-fullscreen": //Full screen button
 
-                element.addEventListener("click", ()=>{videoToggleFullScreen(videoElement);});
+                element.addEventListener("click", ()=>{toggleVideoFullScreen(videoElement);});
 
                 break;
             case "main-video-controls-backward": //Backwards button
 
-                element.addEventListener("click", ()=>{videoTimeStampAdder(videoElement, -10);});//On single click, move current time back 10 seconds
+                element.addEventListener("click", ()=>
+                {
+                    videoElement.currentTime -= 10;
+                });//On single click, move current time back 10 seconds
 
-                element.addEventListener("dblclick", ()=>{videoTimeStampAdder(videoElement, -(videoElement.duration - videoElement.currentTime));});
+                element.addEventListener("dblclick", ()=>
+                {
+                    videoElement.currentTime = 0;
+                });
 
                 break;
             case "main-video-controls-forward": // Forward button
 
-                element.addEventListener("click", ()=>{videoTimeStampAdder(videoElement, 10);});//On single click, move current time back 10 seconds
+                element.addEventListener("click", ()=>
+                {
+                    videoElement.currentTime += 10;
+                    // videoTimeStampAdder(videoElement, 10);
+                });//On single click, move current time back 10 seconds
 
-                element.addEventListener("dblclick", ()=>{videoTimeStampAdder(videoElement, videoElement.currentTime + (0.25 * videoElement.duration));});
+                element.addEventListener("dblclick", ()=>
+                {
+                    videoElement.currentTime += videoElement.currentTime + (0.25 * videoElement.duration);
+                });
                 break;
         }
     });
