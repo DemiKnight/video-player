@@ -169,31 +169,32 @@ function addListeners(videoElement, videoControls)
         {
             case "main-video-controls-play": // The Play button.
 
-                bindClick(element, videoTogglePlay,videoElement);
+                element.addEventListener("click", ()=>{videoTogglePlay(videoElement);});
+
 
                 break;
             case "main-video-controls-mute": // The mute button
 
-                bindClick(element, videoToggleMute, videoElement);
+                element.addEventListener("click", ()=>{videoToggleMute(videoElement);});
 
                 break;
             case "main-video-controls-fullscreen": //Full screen button
 
-                bindClick(element, videoToggleFullScreen, videoElement);
+                element.addEventListener("click", ()=>{videoToggleFullScreen(videoElement);});
+
                 break;
             case "main-video-controls-backward": //Backwards button
 
-                bindClick(element, videoTimeStampAdder, -10); //On single click, move current time back 10 seconds
+                element.addEventListener("click", ()=>{videoTimeStampAdder(videoElement, -10);});//On single click, move current time back 10 seconds
 
-                bindDoubleClick(element, videoTimeStampAdder, -(videoElement.duration - videoElement.currentTime)); //On double click, move back to beginning
+                element.addEventListener("dblclick", ()=>{videoTimeStampAdder(videoElement, -(videoElement.duration - videoElement.currentTime));});
 
                 break;
             case "main-video-controls-forward": // Forward button
 
-                bindClick(element, videoTimeStampAdder, 10);
+                element.addEventListener("click", ()=>{videoTimeStampAdder(videoElement, 10);});//On single click, move current time back 10 seconds
 
-                bindDoubleClick(element, videoTimeStampAdder, videoElement.currentTime + (0.25 * videoElement.duration) );
-
+                element.addEventListener("dblclick", ()=>{videoTimeStampAdder(videoElement, videoElement.currentTime + (0.25 * videoElement.duration));});
                 break;
         }
     });
