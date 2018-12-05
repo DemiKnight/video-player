@@ -19,18 +19,27 @@
             <h1>This is an example</h1>
         </header>
         <main>
-            <video id="main-video" controls width="640" height="360" poster="image/jpeg/poster.jpg">
+            <video controls id="main-video" width="640" height="360" poster="image/jpeg/poster.jpg">
                 <source src="video/mp4/mmu.mp4">
                 <source src="video/webm/MMU.webm">
                 <p>Browser does not support HTML5 video playback. Try using a modern browser like <a href="https://vivaldi.com">Vivaldi</a></p>
             </video>
             <!-- Attempting to not use ID's for controls which may limit amount of videos on the same page -->
             <div id="main-video-controls">
+                <div id="main-video-controls-locationSlider">
+                    <input type="range" id="main-video-controls-locationSlider-input" min="0" max="100" step="1" value="0">
+                </div>
+
                 <button type="button" id="main-video-controls-play">Play</button>
                 <button type="button" id="main-video-controls-mute">Mute</button>
                 <button type="button" id="main-video-controls-fullscreen">Full-Screen</button>
                 <button type="button" id="main-video-controls-backward">Backward</button>
                 <button type="button" id="main-video-controls-forward">Forward</button>
+
+                <div id="main-video-controls-volumeSlider">
+                    <input type="range" id="main-video-controls-volumeSlider-input" min="0" max="1" step="0.01" value="1">
+                    <span id="main-video-controls-volumeSlider-value">0</span>
+                </div>
             </div>
         </main>
     </body>

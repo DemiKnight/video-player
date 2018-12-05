@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () =>
  * Will toggle the muted state of the video.
  * @param {HTMLMediaElement} videoElement Video to toggle the mute on.
  */
-function videoToggleMute(videoElement)
+function toggleVideoMute(videoElement)
 {
     //As a precaution, stop anything other than a video element from being "muted". In case another developer uses this function incorrectly.
     if (videoElement instanceof HTMLMediaElement)
@@ -37,7 +37,7 @@ function videoToggleMute(videoElement)
  * Will will toggle between pause and play for the specified video.
  * @param {HTMLMediaElement} videoElement
  */
-function videoTogglePlay(videoElement)
+function toggleVideoPlay(videoElement)
 {
     if(videoElement instanceof HTMLMediaElement)
     {
@@ -79,7 +79,7 @@ function videoTogglePlay(videoElement)
  * -3- 'Fullscreen' (18/11/14), W3C [online] Accessed 15/11/18 <https://www.w3.org/TR/fullscreen/> ---
  * @param {HTMLMediaElement} videoElement The video to apply this function to.
  */
-function videoToggleFullScreen(videoElement) {
+function toggleVideoFullScreen(videoElement) {
     if(videoElement instanceof HTMLMediaElement)
     {
         if(!videoElement.fullscreenElement)
@@ -100,6 +100,7 @@ function videoToggleFullScreen(videoElement) {
  *
  * @param {HTMLMediaElement} videoElement The video to modify
  * @param {int} changeAmount index 1, the changeAmount The changeAmount of time to take/add.
+ * @deprecated
  */
 function videoTimeStampAdder(videoElement, changeAmount)
 {
@@ -107,7 +108,36 @@ function videoTimeStampAdder(videoElement, changeAmount)
 }
 
 /**
- * Will add functionality to the buttons controlling the given video.
+ * Changes the volume based on the amount given.
+ * @param videoE The video element to change.
+ * @param amount The value to change the volume to.
+ */
+function videoVolumeChange(videoE, amount)
+{
+    videoE.volume = amount;
+}
+
+/**
+ *
+ * @param videoElement
+ * @param target
+ */
+function videoLocationSlider(videoElement, target)
+{
+    videoElement.currentTime = (videoElement.duration * (target/100));
+}
+
+/**
+ * Change inner HTML of a element to the current value of an input
+ * @param {HTMLElement} elementToWatch Input element
+ * @param {HTMLInputElement} valueToChangeTo
+ */
+function videoVolumeValueChange(elementToWatch, valueToChangeTo) {
+    elementToWatch.innerHTML = (Math.round(valueToChangeTo.value * 100)).toString() ;
+}
+
+/**
+ * Will add functionality to the controls for the given video. Will also set values for the input controls based on the video.
  *
  * This function also makes use of closure[1] (specifically Lexical scoping) to reduce repeated code and make user of variables in scope.
  *
@@ -127,6 +157,7 @@ function addListeners(videoElement, videoControls)
      * @param {ChildNode} element Button to bind
      * @param {function} functionTOAdd The function to call when the button is clicked.
      * @param funcToAddParamaters The parameters to pass to the aforementioned function. Needs to include the video reference.
+     * @deprecated
      */
     function bindClick(element, functionTOAdd, ... funcToAddParamaters)
     {
@@ -144,6 +175,7 @@ function addListeners(videoElement, videoControls)
      * @param {ChildNode} element Input element to add event.
      * @param {function} functionToCall Function to call when event is fired.
      * @param {... args} funcToAddParamaters Paramaters to pass to the functionToCall
+     * @deprecated
      */
     function bindDoubleClick(element, functionToCall, ... funcToAddParamaters)
     {
@@ -151,6 +183,29 @@ function addListeners(videoElement, videoControls)
         {
             functionToCall(videoElement, ... funcToAddParamaters)
         });
+    }
+
+
+    /**
+     * Binds functions relevant to the slider value changing.
+     *
+     * @param {HTMLInputElement} element The (slider input) element to bind the function to.
+     * @param functionToAdd The function to call when event is fired.
+     * @param {function} functionOnChange
+     * @param functionValues
+     * @deprecated
+     */
+    function bindSlider(element, functionToAdd, functionOnChange, ... functionValues)
+    {
+        element.addEventListener("input", () => {
+            functionToAdd(videoElement, element.value);
+        });
+
+        //If there is no function provided, don't add the change Event.
+        if(functionOnChange!==undefined)
+            element.addEventListener("change", () => {
+                functionOnChange( ... functionValues)
+            });
     }
 
     // Iterate through each child tag of the visual controls, finding each button and then binding the relevant function.
@@ -175,32 +230,83 @@ function addListeners(videoElement, videoControls)
         {
             case "main-video-controls-play": // The Play button.
 
-                element.addEventListener("click", ()=>{videoTogglePlay(videoElement);});
+                element.addEventListener("click", ()=>{toggleVideoPlay(videoElement);});
 
 
                 break;
             case "main-video-controls-mute": // The mute button
 
-                element.addEventListener("click", ()=>{videoToggleMute(videoElement);});
+                //Todo When mute is active set slider to 0
+                element.addEventListener("click", ()=>{toggleVideoMute(videoElement);});
 
                 break;
             case "main-video-controls-fullscreen": //Full screen button
 
-                element.addEventListener("click", ()=>{videoToggleFullScreen(videoElement);});
+                element.addEventListener("click", ()=>{toggleVideoFullScreen(videoElement);});
 
                 break;
             case "main-video-controls-backward": //Backwards button
 
-                element.addEventListener("click", ()=>{videoTimeStampAdder(videoElement, -10);});//On single click, move current time back 10 seconds
+                element.addEventListener("click", ()=>
+                {
+                    videoElement.currentTime -= 10;
+                });//On single click, move current time back 10 seconds
 
-                element.addEventListener("dblclick", ()=>{videoTimeStampAdder(videoElement, -(videoElement.duration - videoElement.currentTime));});
+                element.addEventListener("dblclick", ()=>
+                {
+                    videoElement.currentTime = 0;
+                });
 
                 break;
             case "main-video-controls-forward": // Forward button
 
-                element.addEventListener("click", ()=>{videoTimeStampAdder(videoElement, 10);});//On single click, move current time back 10 seconds
+                element.addEventListener("click", ()=>
+                {
+                    videoElement.currentTime += 10;
+                });//On single click, move current time back 10 seconds
 
-                element.addEventListener("dblclick", ()=>{videoTimeStampAdder(videoElement, videoElement.currentTime + (0.25 * videoElement.duration));});
+                element.addEventListener("dblclick", ()=>
+                {
+                    videoElement.currentTime += videoElement.currentTime + (0.25 * videoElement.duration);
+                });
+                break;
+            case "main-video-controls-volumeSlider":
+
+                element.firstElementChild.addEventListener("input", ()=>{
+                    videoVolumeChange(videoElement, element.firstElementChild.value)
+                });
+
+                element.firstElementChild.addEventListener("change", () => {
+                    videoVolumeValueChange(
+                        element.children[1],
+                        element.children[0]
+                    );
+                });
+
+                //TODO Better way of setting default value
+                videoVolumeValueChange(
+                    element.children[1],
+                    element.children[0]);
+
+                break;
+
+            case "main-video-controls-locationSlider":
+
+                // console.log(element.firstChild);
+                // console.log(element.children[0].max);
+                element.children[0].max = Math.round(videoElement.duration);
+
+                videoElement.addEventListener("timeupdate", () =>
+                {
+                    element.children[0].value = videoElement.currentTime;
+                });
+
+                element.children[0].addEventListener("input", () =>
+                {
+                    videoElement.currentTime = element.children[0].value;
+                });
+
+                // bindSlider(element.firstElementChild, videoLocationSlider);
                 break;
         }
     });
