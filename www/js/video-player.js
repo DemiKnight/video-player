@@ -263,7 +263,6 @@ function addListeners(videoElement, videoControls)
                 element.addEventListener("click", ()=>
                 {
                     videoElement.currentTime += 10;
-                    // videoTimeStampAdder(videoElement, 10);
                 });//On single click, move current time back 10 seconds
 
                 element.addEventListener("dblclick", ()=>
@@ -273,24 +272,22 @@ function addListeners(videoElement, videoControls)
                 break;
             case "main-video-controls-volumeSlider":
 
+                element.firstElementChild.addEventListener("input", ()=>{
+                    videoVolumeChange(videoElement, element.firstElementChild.value)
+                });
 
-                // TODO When volume slider is at 0, toggle mute icon.
-                // element.children[0].addEventListener("input", () =>
-                // {
-                //     if(element.children[0].value === 0)
-                //     {
-                //         videoElement
-                //     }
-                //
-                // });
+                element.firstElementChild.addEventListener("change", () => {
+                    videoVolumeValueChange(
+                        element.children[1],
+                        element.children[0]
+                    );
+                });
 
-                bindSlider(
-                    element.firstElementChild,
-                    videoVolumeChange,
-                    videoVolumeValueChange,
-                    element.children.namedItem("main-video-controls-volumeSlider-value"),
-                    element.firstElementChild);
-                videoVolumeValueChange(element.children.namedItem("main-video-controls-volumeSlider-value"),element.firstElementChild);
+                //TODO Better way of setting default value
+                videoVolumeValueChange(
+                    element.children[1],
+                    element.children[0]);
+
                 break;
 
             case "main-video-controls-locationSlider":
@@ -309,7 +306,7 @@ function addListeners(videoElement, videoControls)
                     videoElement.currentTime = element.children[0].value;
                 });
 
-                bindSlider(element.firstElementChild, videoLocationSlider);
+                // bindSlider(element.firstElementChild, videoLocationSlider);
                 break;
         }
     });
