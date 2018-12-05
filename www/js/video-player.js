@@ -213,6 +213,13 @@ function addListeners(videoElement, videoControls)
 
                 element.addEventListener("click", ()=>{toggleVideoPlay(videoElement);});
 
+                document.addEventListener("visibilitychange", () => {
+
+                    //TODO Improve logic,
+                    if (!videoElement.paused && document.visibilityState === "hidden")
+                        toggleVideoPlay(videoElement);
+                    if(document.visibilityState === "visible") toggleVideoPlay(videoElement);
+                });
 
                 break;
             case "main-video-controls-mute": // The mute button
