@@ -292,8 +292,6 @@ function addListeners(videoElement, videoControls)
 
             case "main-video-controls-locationSlider":
 
-                // console.log(element.firstChild);
-                // console.log(element.children[0].max);
                 element.children[0].max = Math.round(videoElement.duration);
 
                 videoElement.addEventListener("timeupdate", () =>
@@ -306,7 +304,13 @@ function addListeners(videoElement, videoControls)
                     videoElement.currentTime = element.children[0].value;
                 });
 
-                // bindSlider(element.firstElementChild, videoLocationSlider);
+                break;
+            case "main-video-controls-speedChanger":
+                
+                element.addEventListener("input", () => {
+                    videoElement.playbackRate = element.value;
+                });
+
                 break;
         }
     });
