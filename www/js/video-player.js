@@ -118,25 +118,6 @@ function videoVolumeChange(videoE, amount)
 }
 
 /**
- *
- * @param videoElement
- * @param target
- */
-function videoLocationSlider(videoElement, target)
-{
-    videoElement.currentTime = (videoElement.duration * (target/100));
-}
-
-/**
- * Change inner HTML of a element to the current value of an input
- * @param {HTMLElement} elementToWatch Input element
- * @param {HTMLInputElement} valueToChangeTo
- */
-function videoVolumeValueChange(elementToWatch, valueToChangeTo) {
-    elementToWatch.innerHTML = (Math.round(valueToChangeTo.value * 100)).toString() ;
-}
-
-/**
  * Will add functionality to the controls for the given video. Will also set values for the input controls based on the video.
  *
  * This function also makes use of closure[1] (specifically Lexical scoping) to reduce repeated code and make user of variables in scope.
@@ -292,21 +273,35 @@ function addListeners(videoElement, videoControls)
 
             case "main-video-controls-locationSlider":
 
-                element.children[0].max = Math.round(videoElement.duration);
+                let duration = Math.round(videoElement.duration);
+
+                element.children[1].max = duration;
+                element.children[2].innerHTML =
+                    (duration > 3600 ? (duration- Math.floor(duration/3600))*3600 +  ":" : "") + //Calcuate the number of hours in video, if exceeds 1 hour
+                    (Math.floor(duration/60)) + ":" + //Calculate minutes
+                    (duration-(Math.floor(duration/60))*60); //Calculate seconds
+
 
                 videoElement.addEventListener("timeupdate", () =>
                 {
-                    element.children[0].value = videoElement.currentTime;
+                    console.log(Math.round(videoElement.currentTime % 60));
+                    element.children[1].value = videoElement.currentTime;
+
+                    element.children[0].innerHTML =
+                        (duration > 3600 ? Math.round(videoElement.currentTime % 3600) +  ":" : "") + //Calcuate the number of hours in video, if exceeds 1 hour
+                        (Math.floor(videoElement.currentTime/60)) + ":" + //Calculate minutes
+                        (Math.round(videoElement.currentTime % 60)); //Calculate seconds
+
                 });
 
-                element.children[0].addEventListener("input", () =>
+                element.children[1].addEventListener("input", () =>
                 {
-                    videoElement.currentTime = element.children[0].value;
+                    videoElement.currentTime = element.children[1].value;
                 });
 
                 break;
             case "main-video-controls-speedChanger":
-                
+
                 element.addEventListener("input", () => {
                     videoElement.playbackRate = element.value;
                 });
@@ -314,4 +309,23 @@ function addListeners(videoElement, videoControls)
                 break;
         }
     });
+}
+
+/**
+ *
+ * @param videoElement
+ * @param target
+ */
+function videoLocationSlider(videoElement, target)
+{
+    videoElement.currentTime = (videoElement.duration * (target/100));
+}
+
+/**
+ * Change inner HTML of a element to the current value of an input
+ * @param {HTMLElement} elementToWatch Input element
+ * @param {HTMLInputElement} valueToChangeTo
+ */
+function videoVolumeValueChange(elementToWatch, valueToChangeTo) {
+    elementToWatch.innerHTML = (Math.round(valueToChangeTo.value * 100)).toString() ;
 }
