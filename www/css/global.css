@@ -5,3 +5,7 @@ h1{
 .main-video{
     border: #000000 solid 2px;
 }
+
+#main-video-controls-volumeSlider-value::after{
+    content: '%';
+}
