@@ -1,3 +1,39 @@
+@font-face {
+    font-family: 'Font Awesome';
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/fa-regular-400.eot");
+    src: url("../fonts/fa-regular-400.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/fa-regular-400.woff2") format("woff2");
+}
+.fa{
+    font-family: "Font Awesome";
+    font-style: normal;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    -ms-word-wrap: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    vertical-align: center;
+
+    /* Webkit supported browsers */
+    -webkit-font-smoothing: antialiased;
+
+    /* Safari & Chrome */
+    text-rendering: optimizeLegibility;
+
+    /*Firefox support*/
+    -moz-osx-font-smoothing: grayscale;
+
+    /*Internet Explorer*/
+    font-feature-settings: 'liga';
+
+    font-size: 1.5rem;
+}
+
 h1{
     /*color: aqua;*/
 }
