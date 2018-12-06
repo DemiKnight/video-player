@@ -1,77 +1,47 @@
-/*.fa,.fas*/
-/*{*/
-    /*font-style: normal;*/
-    /*display: inline-block;*/
-    /*line-height: 1;*/
-    /*text-transform: none;*/
-    /*letter-spacing: normal;*/
-    /*-ms-word-wrap: normal;*/
-    /*word-wrap: normal;*/
-    /*white-space: nowrap;*/
-    /*direction: ltr;*/
-    /*vertical-align: center;*/
-
-    /*!* Webkit supported browsers *!*/
-    /*-webkit-font-smoothing: antialiased;*/
-
-    /*!* Safari & Chrome *!*/
-    /*text-rendering: optimizeLegibility;*/
-
-    /*!*Firefox support*!*/
-    /*-moz-osx-font-smoothing: grayscale;*/
-
-    /*!*Internet Explorer*!*/
-    /*font-feature-settings: 'liga';*/
-
-/*}*/
-
-/*.fa{*/
-    /*font-family: "Font Awesome";*/
-    /*font-weight: 300;*/
-/*}*/
-/*@font-face {*/
-    /*font-family: 'Font Awesome';*/
-    /*font-style: normal;*/
-    /*!*font-weight: 400;*!*/
-    /*src: url("../fonts/fa-regular-400.eot");*/
-    /*src: url("../fonts/fa-regular-400.eot?#iefix") format("embedded-opentype"),*/
-    /*url("../fonts/fa-regular-400.woff2") format("woff2"),*/
-    /*url("../fonts/fa-regular-400.woff") format("woff"),*/
-    /*url("../fonts/fa-regular-400.ttf") format("truetype"),*/
-    /*url("../fonts/fa-regular-400.svg") format("svg");*/
-/*}*/
-/*.fas*/
-/*{*/
-    /*font-family: "Font Awesome";*/
-    /*font-weight: 900;*/
-/*}*/
-/*@font-face {*/
-    /*font-family: 'Font Awesome';*/
-    /*font-style: normal;*/
-    /*!*font-weight: 400;*!*/
-    /*src: url("../fonts/fa-solid-900.eot");*/
-    /*src: url("../fonts/fa-solid-900.eot?#iefix") format("embedded-opentype"),*/
-    /*url("../fonts/fa-solid-900.woff2") format("woff2"),*/
-    /*url("../fonts/fa-solid-900.woff") format("woff"),*/
-    /*url("../fonts/fa-solid-900.ttf") format("truetype"),*/
-    /*url("../fonts/fa-solid-900.svg") format("svg");*/
-/*}*/
-
-/*.fa-atlas::before{*/
-    /*content: "\f558";*/
-/*}*/
-/*.fa-pause::before{*/
-    /*content: "\f04c";*/
-/*}*/
-
 h1{
     /*color: aqua;*/
 }
 
-.main-video{
+.main-video
+{
+    border: #000000 solid 2px;
+    padding: 5px;
+}
+
+.main-video + .main-video-controls
+{
     border: #000000 solid 2px;
 }
 
+.main-video, .main-video + .main-video-controls
+{
+    width: 100%
+}
+
+.main-video-controls .main-video-controls-locationSlider input{
+    width: auto;
+}
+
+.main-video-controls button, .main-video-controls select{
+    color: #FF0000;
+    background: #2a2a2a;
+}
+.main-video-controls button{
+    padding: 1.5rem;
+    font-size: 2rem;
+
+    border-radius: 25px;
+}
+
+.main-video-controls select{
+    padding: 1rem;
+    font-size: 1.75rem;
+}
+
+.main-video video{
+    width: auto;
+}
 #main-video-controls-volumeSlider-value::after{
     content: '%';
 }
+

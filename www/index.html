@@ -17,20 +17,22 @@
     </head>
     <body>
         <header>
-            <h1>This is an example</h1>
+            <h1>18016816, Alex James Knight</h1>
         </header>
         <main>
-            <video controls id="main-video" width="640" height="360" poster="image/jpeg/poster.jpg">
+            <video controls class="main-video" id="main-video" width="640" height="360" poster="image/jpeg/poster.jpg">
                 <source src="video/mp4/mmu.mp4">
                 <source src="video/webm/MMU.webm">
                 <p>Browser does not support HTML5 video playback. Try using a modern browser like <a href="https://vivaldi.com">Vivaldi</a></p>
             </video>
             <!-- Attempting to not use ID's for controls which may limit amount of videos on the same page -->
-            <div id="main-video-controls">
+            <div id="main-video-controls" class="main-video-controls">
 
-                <div id="main-video-controls-locationSlider">
+                <div id="main-video-controls-locationSlider" class="main-video-controls-locationSlider">
                     <span id="main-video-controls-currentTime" title="Current Location">0:0</span>
-                    <input type="range" id="main-video-controls-locationSlider-input" min="0" max="100" step="1" value="0">
+
+                    <input type="range" id="main-video-controls-locationSlider-input" class="main-video-controls-locationSlider-input" min="0" max="100" step="1" value="0">
+
                     <span id="main-video-controls-maximumTime" title="Maximum duration">0:0</span>
                 </div>
 
@@ -45,12 +47,15 @@
                 <button type="button" id="main-video-controls-fullscreen" title="Toggle Fullscreen">
                     <i class="fas fa-expand"></i>
                 </button>
+
                 <button type="button" id="main-video-controls-backward" title="Move Backwards">
                     <i class="fas fa-arrow-alt-left"></i>
                 </button>
+
                 <button type="button" id="main-video-controls-forward" title="Move Forwards">
                     <i class="fas fa-arrow-alt-right"></i>
                 </button>
+
                 <select id="main-video-controls-speedChanger" title="Speed Changer">
                     <option value="0.25">0.25x</option>
                     <option value="0.5">0.5x</option>
