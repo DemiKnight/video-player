@@ -33,6 +33,9 @@
 
     font-size: 1.5rem;
 }
+.fa-atlas::before{
+    content: "\f558";
+}
 
 h1{
     /*color: aqua;*/
