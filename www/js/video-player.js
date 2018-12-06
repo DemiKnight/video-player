@@ -304,9 +304,9 @@ function addListeners(videoElement, videoControls)
                 The hour part is dependent of the video exceeding 3600 hours.
                  */
                 element.children[2].innerHTML =
-                    (duration > 3600 ? (duration- Math.floor(duration/3600))*3600 +  ":" : "") + //Calcuate the number of hours in video, if exceeds 1 hour
-                    (Math.floor(duration/60)) + ":" + //Calculate minutes
-                    (duration-(Math.floor(duration/60))*60); //Calculate seconds
+                    (duration > 3600 ? Math.round(duration % 3600).toString().padStart(2, '0') +  ":" : "") + //Calcuate the number of hours in video, if exceeds 1 hour
+                    Math.floor(duration/60).toString().padStart(2,'0') + ":" + //Calculate minutes
+                    Math.round(duration % 60).toString().padStart(2,'0'); //Calculate seconds
 
 
                 videoElement.addEventListener("timeupdate", () =>
@@ -316,14 +316,12 @@ function addListeners(videoElement, videoControls)
                     /*
                     Set the span to the current timestamp of the video. In the format hh:mm:ss.
                     The hour part is dependent of the video exceeding 3600 hours.
-
-                    TODO Add 0 padding to the value.
                     TODO Reduce the amount of code by adding seperate span tags for each numeric value or a date/time element.
                      */
                     element.children[0].innerHTML =
-                        (duration > 3600 ? Math.round(videoElement.currentTime % 3600) +  ":" : "") + //Calcuate the number of hours in video, if exceeds 1 hour
-                        (Math.floor(videoElement.currentTime/60)) + ":" + //Calculate minutes
-                        (Math.round(videoElement.currentTime % 60)); //Calculate seconds
+                        (duration > 3600 ? Math.round(videoElement.currentTime % 3600).toString().padStart(2, '0') +  ":" : "") + //Calcuate the number of hours in video, if exceeds 1 hour
+                        Math.floor(videoElement.currentTime/60).toString().padStart(2,'0' + ":" + //Calculate minutes
+                        Math.round(videoElement.currentTime % 60)).toString().padStart(2,'0'); //Calculate seconds
 
                 });
 
