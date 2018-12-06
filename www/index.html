@@ -29,17 +29,29 @@
             <div id="main-video-controls">
 
                 <div id="main-video-controls-locationSlider">
-                    <span id="main-video-controls-currentTime">0:0</span>
+                    <span id="main-video-controls-currentTime" title="Current Location">0:0</span>
                     <input type="range" id="main-video-controls-locationSlider-input" min="0" max="100" step="1" value="0">
-                    <span id="main-video-controls-maximumTime">0:0</span>
+                    <span id="main-video-controls-maximumTime" title="Maximum duration">0:0</span>
                 </div>
 
-                <button type="button" id="main-video-controls-play">Play</button>
-                <button type="button" id="main-video-controls-mute">Mute</button>
-                <button type="button" id="main-video-controls-fullscreen">Full-Screen</button>
-                <button type="button" id="main-video-controls-backward">Backward</button>
-                <button type="button" id="main-video-controls-forward">Forward</button>
-                <select id="main-video-controls-speedChanger" name="Speed Changer">
+                <button type="button" id="main-video-controls-play" title="Toggle Video Play">
+                    <i class="fas fa-play"></i>
+                </button>
+
+                <button type="button" id="main-video-controls-mute" title="Mute Video">
+                    <i class="fas fa-volume-slash"></i>
+                </button>
+
+                <button type="button" id="main-video-controls-fullscreen" title="Toggle Fullscreen">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button type="button" id="main-video-controls-backward" title="Move Backwards">
+                    <i class="fas fa-arrow-alt-left"></i>
+                </button>
+                <button type="button" id="main-video-controls-forward" title="Move Forwards">
+                    <i class="fas fa-arrow-alt-right"></i>
+                </button>
+                <select id="main-video-controls-speedChanger" title="Speed Changer">
                     <option value="0.25">0.25x</option>
                     <option value="0.5">0.5x</option>
                     <option value="1" selected>1x</option>
@@ -51,7 +63,7 @@
                     <span id="main-video-controls-volumeSlider-value">0</span>
                 </div>
             </div>
-            <i class="fa fa-pause"></i>
+
         </main>
     </body>
 </html>
