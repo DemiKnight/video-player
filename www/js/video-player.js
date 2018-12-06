@@ -293,6 +293,23 @@ function addListeners(videoElement, videoControls)
                 break;
 
             case "main-video-controls-locationSlider":
+                /*
+                ## Literal Representations:
+
+                element.children == Array[3]
+
+                children [0] === <span id="main-video-controls-currentTime" title="Current Location">00:00</span>
+
+                children [1] === <input type="range" id="main-video-controls-locationSlider-input" class="main-video-controls-locationSlider-input" min="0" max="100" step="1" value="0">
+
+                children [2] === <span id="main-video-controls-maximumTime" title="Maximum duration">00:00</span>
+
+                ## Meaning :
+
+                children [0] : Current location/timestamp (hh:mm:ss).
+                children [1] : The slider representing the video playback location.
+                children [2] : Maximum duration of video (hh:mm:ss).
+                 */
 
                 let duration = Math.round(videoElement.duration);
 
@@ -302,10 +319,32 @@ function addListeners(videoElement, videoControls)
                 /*
                 Set the span to the duration of the video, in the format: hh:mm:ss.
                 The hour part is dependent of the video exceeding 3600 hours.
+
+                Calculation for both total duration and current time.
+
+                ## Calculations:
+
+                - 'duration % 60' . Get the remainder after dividing by num of seconds in a minute. Then get whole number, which is the seconds.
+                - 'duration / 60' . Get the number of minutes within the time, then remove all remaining decimals.
+
+                - For calculating hours:
+                    - duration > 3600 . If the duration is greater than 3600, then the length is greater than a hour and should display the additional numerical values.
+                    - duration % 3600 . Get the number of hours within the duration.
+
+                 x % y : Modulus or Remainder operator [3], will get the remainding value after diving two numbers.
+
+                 Math.floor() : [1] will get the lowest integer value. Useful for getting the number of minutes within the current time regardless of the seconds to the next minute.
+                 Math.round() : [2] Will get the closest whole integer. Useful got getting the closest second after using the modulus operation.
+                 padStart(lengthToPad, fillerString) : Pad the beginning of the string with 0's, unless overridden.
+
+
+                -1- 'Math.floor()' 29/11/2018, Mozilla Developer Network [online] Accessed 06/12/2018 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor> ---
+                -2- 'Math.round()' 13/07/2018, Mozilla Developer Network [online] Accessed 06/12/2018 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round> ---
+                -3- 'Arithmetic operators' 16/05/2018, Mozilla Developer Network [online] Accessed 06/12/2018 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Remainder_()> ---
                  */
                 element.children[2].innerHTML =
                     (duration > 3600 ? Math.round(duration % 3600).toString().padStart(2, '0') +  ":" : "") + //Calcuate the number of hours in video, if exceeds 1 hour
-                    Math.floor(duration/60).toString().padStart(2,'0') + ":" + //Calculate minutes
+                    Math.floor(duration / 60).toString().padStart(2,'0') + ":" + //Calculate minutes
                     Math.round(duration % 60).toString().padStart(2,'0'); //Calculate seconds
 
 
@@ -320,7 +359,7 @@ function addListeners(videoElement, videoControls)
                      */
                     element.children[0].innerHTML =
                         (duration > 3600 ? Math.round(videoElement.currentTime % 3600).toString().padStart(2, '0') +  ":" : "") + //Calcuate the number of hours in video, if exceeds 1 hour
-                        Math.floor(videoElement.currentTime/60).toString().padStart(2,'0' + ":" + //Calculate minutes
+                        Math.floor(videoElement.currentTime / 60).toString().padStart(2,'0' + ":" + //Calculate minutes
                         Math.round(videoElement.currentTime % 60)).toString().padStart(2,'0'); //Calculate seconds
 
                 });
@@ -439,15 +478,3 @@ function addListeners(videoElement, videoControls)
         // if(document.visibilityState === "visible") toggleVideoPlay(videoElement);
     });
 }
-
-/**
- *
- * @param videoElement
- * @param target
- */
-function videoLocationSlider(videoElement, target)
-{
-    videoElement.currentTime = (videoElement.duration * (target/100));
-}
-
-
