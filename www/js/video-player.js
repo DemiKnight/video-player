@@ -224,62 +224,43 @@ function addListeners(videoElement, videoControls)
         {
             case "main-video-controls-play": // The Play button.
 
-                element.addEventListener("click", ()=>{toggleVideoPlay(videoElement);});
-
-
-                document.addEventListener("keydown", (event) => {
-                    if(event.key === " " || event.key === "Spacebar") toggleVideoPlay(videoElement);
-                });
-
-
-                document.addEventListener("visibilitychange", () => {
-
-                    //TODO Improve logic,
-                    if (!videoElement.paused && document.visibilityState === "hidden")
-                        toggleVideoPlay(videoElement);
-                    if(document.visibilityState === "visible") toggleVideoPlay(videoElement);
-                });
+                element.addEventListener("click", ()=>{toggleVideoPlay(videoElement);}); //Toggle on button click
 
                 break;
             case "main-video-controls-mute": // The mute button
 
-                //Todo When mute is active set slider to 0
-                element.addEventListener("click", ()=>{toggleVideoMute(videoElement);});
-
-                // document.addEventListener("keydown", (event) => {
-                //     if(event.key === "m" || event.key === "M") ;
-                // });
+                element.addEventListener("click", ()=>{toggleVideoMute(videoElement);}); //Toggle mute
 
                 break;
             case "main-video-controls-fullscreen": //Full screen button
 
                 element.addEventListener("click", ()=>{toggleVideoFullScreen(videoElement);});
 
-                // document.addEventListener("keydown", (event) => {
-                //     if(event.key === "f" || event.key === "F") toggleVideoFullScreen(videoElement);
-                // });
-
-
                 break;
             case "main-video-controls-backward": //Backwards button
 
+                /*
+                Single click === -10 seconds
+                Double Click === back to beginning.
+                 */
                 element.addEventListener("click", ()=>
                 {
                     videoElement.currentTime -= 10;
-                });//On single click, move current time back 10 seconds
+                });
 
                 element.addEventListener("dblclick", ()=>
                 {
                     videoElement.currentTime = 0;
                 });
 
-                // document.addEventListener("keydown", (event) => {
-                //     if(event.key === "ArrowLeft" || event.key === "Left") videoElement.currentTime -= 10;
-                // });
-
 
                 break;
             case "main-video-controls-forward": // Forward button
+
+                /*
+                Single click === +10 seconds
+                Double Click === +30 seconds
+                 */
 
                 element.addEventListener("click", ()=>
                 {
@@ -288,13 +269,8 @@ function addListeners(videoElement, videoControls)
 
                 element.addEventListener("dblclick", ()=>
                 {
-                    videoElement.currentTime += videoElement.currentTime + (0.25 * videoElement.duration);
+                    videoElement.currentTime += 30;
                 });
-
-                // document.addEventListener("keydown", (event) => {
-                //     ;
-                // });
-
 
                 break;
             case "main-video-controls-volumeSlider":
@@ -302,36 +278,17 @@ function addListeners(videoElement, videoControls)
                 /*
                 element.children[0] ===> the input element.
                 element.children[1] ===> THe span element.
-
                  */
 
-                element.firstElementChild.addEventListener("input", ()=>{
-                    console.log("S");
+                element.firstElementChild.addEventListener("input", ()=>
+                {
+                    // When the value of the input changes, update the label & video volume.
                     videoVolumeChange(videoElement, element.children[0], element.children[1]);
                 });
 
+                //Set default values. Using the video volume input.
                 videoElement.volume = element.children[0].value;
-                element.children[1].innerHTML = videoElement.volume*100;
-                // document.addEventListener("keydown", (event) => {
-                //
-                //     // console.log("Before: " + element.children[0].value);
-                //
-                //     if(event.key === "ArrowUp" || event.key === "Up")
-                //     {
-                //         element.children[0].value += (element.children[0].value === 1 ? 0 : 0.1);
-                //         videoVolumeChange(videoElement, element.children[0], element.children[1]);
-                //
-                //         console.log(videoElement.volume);
-                //     }
-                //
-                //     if(event.key === "ArrowDown" || event.key === "Down")
-                //     {
-                //         element.children[0].value -= (element.children[0].value === 0 ? 0 : 0.1);
-                //         videoVolumeChange(videoElement, element.children[0], element.children[1]);
-                //
-                //         console.log(videoElement.volume);
-                //     }
-                // });
+                element.children[1].innerHTML = (videoElement.volume*100).toString();
 
                 break;
 
@@ -339,7 +296,13 @@ function addListeners(videoElement, videoControls)
 
                 let duration = Math.round(videoElement.duration);
 
-                element.children[1].max = duration;
+
+                element.children[1].max = duration; //Set the max length of the slider to the video duration.
+
+                /*
+                Set the span to the duration of the video, in the format: hh:mm:ss.
+                The hour part is dependent of the video exceeding 3600 hours.
+                 */
                 element.children[2].innerHTML =
                     (duration > 3600 ? (duration- Math.floor(duration/3600))*3600 +  ":" : "") + //Calcuate the number of hours in video, if exceeds 1 hour
                     (Math.floor(duration/60)) + ":" + //Calculate minutes
@@ -348,8 +311,15 @@ function addListeners(videoElement, videoControls)
 
                 videoElement.addEventListener("timeupdate", () =>
                 {
-                    element.children[1].value = videoElement.currentTime;
+                    element.children[1].value = videoElement.currentTime; //Set the slider value to current video frame.
 
+                    /*
+                    Set the span to the current timestamp of the video. In the format hh:mm:ss.
+                    The hour part is dependent of the video exceeding 3600 hours.
+
+                    TODO Add 0 padding to the value.
+                    TODO Reduce the amount of code by adding seperate span tags for each numeric value or a date/time element.
+                     */
                     element.children[0].innerHTML =
                         (duration > 3600 ? Math.round(videoElement.currentTime % 3600) +  ":" : "") + //Calcuate the number of hours in video, if exceeds 1 hour
                         (Math.floor(videoElement.currentTime/60)) + ":" + //Calculate minutes
@@ -357,14 +327,19 @@ function addListeners(videoElement, videoControls)
 
                 });
 
+                /*
+                When the value of the location slider changes, update the currentVideo.
+                 */
                 element.children[1].addEventListener("input", () =>
                 {
                     videoElement.currentTime = element.children[1].value;
                 });
 
                 break;
+
             case "main-video-controls-speedChanger":
 
+                //Set the playbackrate to the value of the dropdown. Default is 1.0
                 element.addEventListener("input", () => {
                     videoElement.playbackRate = element.value;
                 });
@@ -379,6 +354,12 @@ function addListeners(videoElement, videoControls)
     document.addEventListener("keydown", (event) => {
         switch (event.key)
         {
+            case " ": case "Spacebar":
+
+                toggleVideoPlay(videoElement);
+
+                break;
+
             case "m":case "M":
 
                 toggleVideoMute(videoElement);
@@ -405,27 +386,60 @@ function addListeners(videoElement, videoControls)
 
             case "ArrowUp": case "Up":
 
-                if(videoElement.volume !== 1)
-                videoElement.volume += 0.1;
+                if(!((videoElement.volume + 0.1) > 1))
+                {
 
-                videoControls.children[7].children[1].innerHTML = Math.round(videoElement.volume*100);
+                    // videoElement.volume += parseFloat(0.1.toFixed()); //increment by 0.1
+                    videoElement.volume = parseFloat((videoElement.volume + 0.1).toFixed(2));
 
-                videoControls.children[7].children[0].value = videoElement.volume;
+                    videoControls.children[7].children[1].innerHTML = Math.round(videoElement.volume*100).toString(); //Change the label value
+
+                    videoControls.children[7].children[0].value = videoElement.volume; //Change the slider value to the video control.
+                }
 
                 break;
 
 
             case "ArrowDown": case "Down":
 
-            if(videoElement.volume !== 0)
-                videoElement.volume -= 0.1;
+                if(!((videoElement.volume-0.1) < 0))
+                {
+                     // -= parseFloat(0.1.toFixed());
 
-            videoControls.children[7].children[1].innerHTML = Math.round(videoElement.volume*100);
-            videoControls.children[7].children[0].value = videoElement.volume;
+                    videoElement.volume = parseFloat((videoElement.volume - 0.1).toFixed(2));
 
-            break;
+                    videoControls.children[7].children[1].innerHTML = Math.round(videoElement.volume*100).toString(); //Change the label value
+                    videoControls.children[7].children[0].value = videoElement.volume; //Change the slider value to the video control.
+
+                }
+
+                break;
         }
-    })
+    });
+
+    //When user changes viability, to
+    document.addEventListener("visibilitychange", () =>
+    { //
+        switch (document.visibilityState)
+        {
+            case "hidden":
+                ///
+                if (!videoElement.paused) toggleVideoPlay(videoElement);
+
+
+                break;
+            case "visible":
+                //
+
+                toggleVideoPlay(videoElement);
+
+                break;
+        }
+        // //TODO Improve logic,
+        // if (!videoElement.paused && document.visibilityState === "hidden")
+        //     toggleVideoPlay(videoElement);
+        // if(document.visibilityState === "visible") toggleVideoPlay(videoElement);
+    });
 }
 
 /**
