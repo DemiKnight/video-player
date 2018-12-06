@@ -85,3 +85,7 @@ typings/
 
 # MMU Documents will be kept here:
 docsMMU/
+
+#Doxygen
+html/
+latex/
