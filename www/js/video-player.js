@@ -246,18 +246,18 @@ function addListeners(videoElement, videoControls)
                 //Todo When mute is active set slider to 0
                 element.addEventListener("click", ()=>{toggleVideoMute(videoElement);});
 
-                document.addEventListener("keydown", (event) => {
-                    if(event.key === "m" || event.key === "M") toggleVideoMute(videoElement);
-                });
+                // document.addEventListener("keydown", (event) => {
+                //     if(event.key === "m" || event.key === "M") ;
+                // });
 
                 break;
             case "main-video-controls-fullscreen": //Full screen button
 
                 element.addEventListener("click", ()=>{toggleVideoFullScreen(videoElement);});
 
-                document.addEventListener("keydown", (event) => {
-                    if(event.key === "f" || event.key === "F") toggleVideoFullScreen(videoElement);
-                });
+                // document.addEventListener("keydown", (event) => {
+                //     if(event.key === "f" || event.key === "F") toggleVideoFullScreen(videoElement);
+                // });
 
 
                 break;
@@ -273,9 +273,9 @@ function addListeners(videoElement, videoControls)
                     videoElement.currentTime = 0;
                 });
 
-                document.addEventListener("keydown", (event) => {
-                    if(event.key === "ArrowLeft" || event.key === "Left") videoElement.currentTime -= 10;
-                });
+                // document.addEventListener("keydown", (event) => {
+                //     if(event.key === "ArrowLeft" || event.key === "Left") videoElement.currentTime -= 10;
+                // });
 
 
                 break;
@@ -291,9 +291,9 @@ function addListeners(videoElement, videoControls)
                     videoElement.currentTime += videoElement.currentTime + (0.25 * videoElement.duration);
                 });
 
-                document.addEventListener("keydown", (event) => {
-                    if(event.key === "ArrowRight" || event.key === "Right") videoElement.currentTime += 30;
-                });
+                // document.addEventListener("keydown", (event) => {
+                //     ;
+                // });
 
 
                 break;
@@ -310,26 +310,28 @@ function addListeners(videoElement, videoControls)
                     videoVolumeChange(videoElement, element.children[0], element.children[1]);
                 });
 
-                document.addEventListener("keydown", (event) => {
-
-                    // console.log("Before: " + element.children[0].value);
-
-                    if(event.key === "ArrowUp" || event.key === "Up")
-                    {
-                        element.children[0].value += (element.children[0].value === 1 ? 0 : 0.1);
-                        videoVolumeChange(videoElement, element.children[0], element.children[1]);
-
-                        console.log(videoElement.volume);
-                    }
-
-                    if(event.key === "ArrowDown" || event.key === "Down")
-                    {
-                        element.children[0].value -= (element.children[0].value === 0 ? 0 : 0.1);
-                        videoVolumeChange(videoElement, element.children[0], element.children[1]);
-
-                        console.log(videoElement.volume);
-                    }
-                });
+                videoElement.volume = element.children[0].value;
+                element.children[1].innerHTML = videoElement.volume*100;
+                // document.addEventListener("keydown", (event) => {
+                //
+                //     // console.log("Before: " + element.children[0].value);
+                //
+                //     if(event.key === "ArrowUp" || event.key === "Up")
+                //     {
+                //         element.children[0].value += (element.children[0].value === 1 ? 0 : 0.1);
+                //         videoVolumeChange(videoElement, element.children[0], element.children[1]);
+                //
+                //         console.log(videoElement.volume);
+                //     }
+                //
+                //     if(event.key === "ArrowDown" || event.key === "Down")
+                //     {
+                //         element.children[0].value -= (element.children[0].value === 0 ? 0 : 0.1);
+                //         videoVolumeChange(videoElement, element.children[0], element.children[1]);
+                //
+                //         console.log(videoElement.volume);
+                //     }
+                // });
 
                 break;
 
@@ -370,6 +372,60 @@ function addListeners(videoElement, videoControls)
                 break;
         }
     });
+
+
+    //Keyboard Shortcuts
+
+    document.addEventListener("keydown", (event) => {
+        switch (event.key)
+        {
+            case "m":case "M":
+
+                toggleVideoMute(videoElement);
+
+                break;
+
+            case "ArrowRight": case "Right":
+
+                videoElement.currentTime += 30;
+
+                break;
+
+            case "ArrowLeft": case "Left":
+
+                videoElement.currentTime -= 10;
+
+                break;
+
+            case "f": case "F":
+
+                toggleVideoFullScreen(videoElement);
+
+                break;
+
+            case "ArrowUp": case "Up":
+
+                if(videoElement.volume !== 1)
+                videoElement.volume += 0.1;
+
+                videoControls.children[7].children[1].innerHTML = Math.round(videoElement.volume*100);
+
+                videoControls.children[7].children[0].value = videoElement.volume;
+
+                break;
+
+
+            case "ArrowDown": case "Down":
+
+            if(videoElement.volume !== 0)
+                videoElement.volume -= 0.1;
+
+            videoControls.children[7].children[1].innerHTML = Math.round(videoElement.volume*100);
+            videoControls.children[7].children[0].value = videoElement.volume;
+
+            break;
+        }
+    })
 }
 
 /**
