@@ -213,6 +213,12 @@ function addListeners(videoElement, videoControls)
 
                 element.addEventListener("click", ()=>{toggleVideoPlay(videoElement);});
 
+
+                document.addEventListener("keydown", (event) => {
+                    if(event.key === " " || event.key === "Spacebar") toggleVideoPlay(videoElement);
+                });
+
+
                 document.addEventListener("visibilitychange", () => {
 
                     //TODO Improve logic,
@@ -227,10 +233,19 @@ function addListeners(videoElement, videoControls)
                 //Todo When mute is active set slider to 0
                 element.addEventListener("click", ()=>{toggleVideoMute(videoElement);});
 
+                document.addEventListener("keydown", (event) => {
+                    if(event.key === "m" || event.key === "M") toggleVideoMute(videoElement);
+                });
+
                 break;
             case "main-video-controls-fullscreen": //Full screen button
 
                 element.addEventListener("click", ()=>{toggleVideoFullScreen(videoElement);});
+
+                document.addEventListener("keydown", (event) => {
+                    if(event.key === "f" || event.key === "F") toggleVideoFullScreen(videoElement);
+                });
+
 
                 break;
             case "main-video-controls-backward": //Backwards button
@@ -245,6 +260,11 @@ function addListeners(videoElement, videoControls)
                     videoElement.currentTime = 0;
                 });
 
+                document.addEventListener("keydown", (event) => {
+                    if(event.key === "ArrowLeft" || event.key === "Left") videoElement.currentTime -= 10;
+                });
+
+
                 break;
             case "main-video-controls-forward": // Forward button
 
@@ -257,6 +277,12 @@ function addListeners(videoElement, videoControls)
                 {
                     videoElement.currentTime += videoElement.currentTime + (0.25 * videoElement.duration);
                 });
+
+                document.addEventListener("keydown", (event) => {
+                    if(event.key === "ArrowRight" || event.key === "Right") videoElement.currentTime += 30;
+                });
+
+
                 break;
             case "main-video-controls-volumeSlider":
 
@@ -275,6 +301,32 @@ function addListeners(videoElement, videoControls)
                 videoVolumeValueChange(
                     element.children[1],
                     element.children[0]);
+
+                document.addEventListener("keydown", (event) => {
+
+                    if(event.key === "ArrowUp" || event.key === "Up"){
+
+                        element.children[0].value += (element.children[0].value === 1 ? 0 : 0.1);
+
+                        videoVolumeValueChange(
+                            element.children[1],
+                            element.children[0]
+                        );
+                    }
+                });
+
+                document.addEventListener("keydown", (event) => {
+
+                    if(event.key === "ArrowDown" || event.key === "Down"){
+
+                        element.children[0].value -= (element.children[0].value === 0 ? 0 : 0.1);
+
+                        videoVolumeValueChange(
+                            element.children[1],
+                            element.children[0]
+                        );
+                    }
+                });
 
                 break;
 
