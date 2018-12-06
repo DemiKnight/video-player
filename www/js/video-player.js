@@ -109,12 +109,25 @@ function videoTimeStampAdder(videoElement, changeAmount)
 
 /**
  * Changes the volume based on the amount given.
- * @param videoE The video element to change.
- * @param amount The value to change the volume to.
+ * @param {HTMLMediaElement} videoE The video element to change.
+ * @param {HTMLInputElement} inputControl The value to change the volume to.
+ * @param {HTMLSpanElement} labelToUpdate Label to represent the video volume.
  */
-function videoVolumeChange(videoE, amount)
+function videoVolumeChange(videoE, inputControl, labelToUpdate)
 {
-    videoE.volume = amount;
+    videoE.volume = parseFloat(inputControl.value);//Turn string to float for volume usage
+
+    labelToUpdate.innerHTML = (videoE.volume*100).toString();
+}
+
+/**
+ * Change inner HTML of a element to the current value of an input
+ * @param {HTMLElement} elementToWatch Input element
+ * @param {HTMLInputElement} valueToChangeTo
+ * @deprecated
+ */
+function videoVolumeValueChange(elementToWatch, valueToChangeTo) {
+    elementToWatch.innerHTML = (Math.round(valueToChangeTo.value * 100)).toString() ;
 }
 
 /**
@@ -286,45 +299,35 @@ function addListeners(videoElement, videoControls)
                 break;
             case "main-video-controls-volumeSlider":
 
+                /*
+                element.children[0] ===> the input element.
+                element.children[1] ===> THe span element.
+
+                 */
+
                 element.firstElementChild.addEventListener("input", ()=>{
-                    videoVolumeChange(videoElement, element.firstElementChild.value)
+                    console.log("S");
+                    videoVolumeChange(videoElement, element.children[0], element.children[1]);
                 });
-
-                element.firstElementChild.addEventListener("change", () => {
-                    videoVolumeValueChange(
-                        element.children[1],
-                        element.children[0]
-                    );
-                });
-
-                //TODO Better way of setting default value
-                videoVolumeValueChange(
-                    element.children[1],
-                    element.children[0]);
 
                 document.addEventListener("keydown", (event) => {
 
-                    if(event.key === "ArrowUp" || event.key === "Up"){
+                    // console.log("Before: " + element.children[0].value);
 
+                    if(event.key === "ArrowUp" || event.key === "Up")
+                    {
                         element.children[0].value += (element.children[0].value === 1 ? 0 : 0.1);
+                        videoVolumeChange(videoElement, element.children[0], element.children[1]);
 
-                        videoVolumeValueChange(
-                            element.children[1],
-                            element.children[0]
-                        );
+                        console.log(videoElement.volume);
                     }
-                });
 
-                document.addEventListener("keydown", (event) => {
-
-                    if(event.key === "ArrowDown" || event.key === "Down"){
-
+                    if(event.key === "ArrowDown" || event.key === "Down")
+                    {
                         element.children[0].value -= (element.children[0].value === 0 ? 0 : 0.1);
+                        videoVolumeChange(videoElement, element.children[0], element.children[1]);
 
-                        videoVolumeValueChange(
-                            element.children[1],
-                            element.children[0]
-                        );
+                        console.log(videoElement.volume);
                     }
                 });
 
@@ -343,7 +346,6 @@ function addListeners(videoElement, videoControls)
 
                 videoElement.addEventListener("timeupdate", () =>
                 {
-                    console.log(Math.round(videoElement.currentTime % 60));
                     element.children[1].value = videoElement.currentTime;
 
                     element.children[0].innerHTML =
@@ -380,11 +382,4 @@ function videoLocationSlider(videoElement, target)
     videoElement.currentTime = (videoElement.duration * (target/100));
 }
 
-/**
- * Change inner HTML of a element to the current value of an input
- * @param {HTMLElement} elementToWatch Input element
- * @param {HTMLInputElement} valueToChangeTo
- */
-function videoVolumeValueChange(elementToWatch, valueToChangeTo) {
-    elementToWatch.innerHTML = (Math.round(valueToChangeTo.value * 100)).toString() ;
-}
+
