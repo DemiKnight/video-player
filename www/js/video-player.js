@@ -276,8 +276,18 @@ function addListeners(videoElement, videoControls)
             case "main-video-controls-volumeSlider":
 
                 /*
-                element.children[0] ===> the input element.
-                element.children[1] ===> THe span element.
+                ## Literal Representations:
+
+                element.children == Array[2]
+
+                children [0] === <input type="range" id="main-video-controls-volumeSlider-input" min="0" max="1" step="0.1" value="0.6">
+                children [1] === <span id="main-video-controls-volumeSlider-value">0</span>
+
+                ## Meaning :
+
+                children [0] : Volume slider
+                children [1] : Volume indicator
+
                  */
 
                 element.firstElementChild.addEventListener("input", ()=>

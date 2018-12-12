@@ -38,6 +38,21 @@ h1{
     font-size: 1.75rem;
 }
 
+.main-video-controls .main-video-controls-locationSlider{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.main-video-controls .main-video-controls-locationSlider .main-video-controls-currentTime, .main-video-controls .main-video-controls-locationSlider  .main-video-controls-maximumTime
+{
+    flex-grow: 1;
+}
+.main-video-controls .main-video-controls-locationSlider .main-video-controls-locationSlider-input
+{
+    flex-grow: 2;
+}
+
+
 .main-video video{
     width: auto;
 }
