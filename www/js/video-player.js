@@ -4,35 +4,30 @@
  * -1- J Evans, Loreto Sixth Form College, Code-Up Stockport (26/11/2018) ---
  */
 
-document.addEventListener("DOMContentLoaded", loadVideo); /*() =>
-{
-    const videoElement = document.getElementById("main-video");
-    const videoElementControls = document.getElementById("main-video-controls");
-
-    //Make sure all the video information is ready to be accessed.
-    videoElement.addEventListener("loadeddata", () =>
-    {
-        addListeners(videoElement, videoElementControls);
-    });
-});*/
+document.addEventListener("DOMContentLoaded", loadVideo);
 
 
 function loadVideo()
 {
-    console.log("Loading video.");
     const videoElement = document.getElementById("main-video");
-    // const videoElementControls = document.getElementById("main-video-controls");
 
-    const videoControlLocationSlider = document.getElementById("main-video-controls-locationSlider");
+    // ## Constant Controls
+
+    // # Video Buttons
     const videoControlPlayButton = document.getElementById("main-video-controls-play");
     const videoControlMute = document.getElementById("main-video-controls-mute");
     const videoControlFullscreen = document.getElementById("main-video-controls-fullscreen");
     const videoControlBackward = document.getElementById("main-video-controls-backward");
     const videoControlForward = document.getElementById("main-video-controls-forward");
+
+    // # Video Slider/dropdown
+    const videoControlLocationSlider = document.getElementById("main-video-controls-locationSlider");
     const videoControlSpeedchanger = document.getElementById("main-video-controls-speedChanger");
     const videoControlVolumeSlider = document.getElementById("main-video-controls-volumeSlider");
 
-    let duration = Math.round(videoElement.duration);
+
+
+
 
     /**
      * Will will toggle between pause and play for the specified video.
@@ -130,10 +125,28 @@ function loadVideo()
         videoElement.volume = parseFloat(videoControlVolumeSlider.children[0].value);//Turn string to float for volume usage
 
         videoControlVolumeSlider.children[1].innerHTML = (videoElement.volume*100).toString();
+
+        if(videoElement.volume === 0)
+        {
+            if(videoControlMute.children[0].classList.contains("fa-volume-up"))
+            {
+                videoControlMute.children[0].classList.remove("fa-volume-up");
+                videoControlMute.children[0].classList.add("fa-volume-slash");
+            }
+        }else
+        {
+            if(videoControlMute.children[0].classList.contains("fa-volume-slash"))
+            {
+                videoControlMute.children[0].classList.remove("fa-volume-slash");
+                videoControlMute.children[0].classList.add("fa-volume-up");
+            }
+        }
     }
 
     function videoLocationChange()
     {
+        let duration = Math.round(videoElement.duration);
+
         videoControlLocationSlider.children[1].value = videoElement.currentTime; //Set the slider value to current video frame.
 
         /*
@@ -191,15 +204,13 @@ function loadVideo()
 
             if(!((videoElement.volume + 0.1) > 1))
             {
-
                 // videoElement.volume += parseFloat(0.1.toFixed()); //increment by 0.1
                 videoElement.volume = parseFloat((videoElement.volume + 0.1).toFixed(2));
 
-                videoControls.children[7].children[1].innerHTML = Math.round(videoElement.volume*100).toString(); //Change the label value
+                videoControlVolumeSlider.children[1].innerHTML = Math.round(videoElement.volume*100).toString(); //Change the label value
 
-                videoControls.children[7].children[0].value = videoElement.volume; //Change the slider value to the video control.
+                videoControlVolumeSlider.children[0].value = videoElement.volume; //Change the slider value to the video control.
             }
-
             break;
 
 
@@ -211,8 +222,8 @@ function loadVideo()
 
                 videoElement.volume = parseFloat((videoElement.volume - 0.1).toFixed(2));
 
-                videoControls.children[7].children[1].innerHTML = Math.round(videoElement.volume*100).toString(); //Change the label value
-                videoControls.children[7].children[0].value = videoElement.volume; //Change the slider value to the video control.
+                videoControlVolumeSlider.children[1].innerHTML = Math.round(videoElement.volume*100).toString(); //Change the label value
+                videoControlVolumeSlider.children[0].value = videoElement.volume; //Change the slider value to the video control.
 
             }
 
@@ -245,14 +256,23 @@ function loadVideo()
     function videoTimeForwardClick(){videoElement.currentTime += 10;}
     function videoTimeFOrwarddDoubleClick(){videoElement.currentTime += 30;}
 
+    function changeSpeed()
+    {
+        videoElement.playbackRate = videoControlSpeedchanger.value;
+    }
+
     // ## Register Event Listeners
 
     function defaultValues()
     {
+        let duration = Math.round(videoElement.duration);
+
+
         // ## Default values
         videoVolumeChange();
 
         videoControlLocationSlider.children[1].max = duration;
+
 
         /*
                     Set the span to the duration of the video, in the format: hh:mm:ss.
@@ -302,8 +322,10 @@ function loadVideo()
 
         videoControlForward.addEventListener("click", videoTimeForwardClick);
         videoControlForward.addEventListener("dblclick", videoTimeFOrwarddDoubleClick);
+        
+        videoControlSpeedchanger.addEventListener("input", changeSpeed);
 
-        videoControlLocationSlider.addEventListener("timeupdate", videoLocationChange);
+        videoElement.addEventListener("timeupdate", videoLocationChange);
         videoControlLocationSlider.addEventListener("input", videoLocationChangeDrag);
 
         defaultValues();
