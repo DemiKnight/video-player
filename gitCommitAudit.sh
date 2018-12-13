@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 touch CurrentCommit
 
 vim CurrentCommit

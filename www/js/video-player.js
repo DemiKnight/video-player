@@ -19,8 +19,9 @@ document.addEventListener("DOMContentLoaded", () =>
 /**
  * Will toggle the muted state of the video.
  * @param {HTMLMediaElement} videoElement Video to toggle the mute on.
+ * @param {HTMLButtonElement} controlTag
  */
-function toggleVideoMute(videoElement)
+function toggleVideoMute(videoElement, controlTag)
 {
     //As a precaution, stop anything other than a video element from being "muted". In case another developer uses this function incorrectly.
     if (videoElement instanceof HTMLMediaElement)
@@ -31,13 +32,22 @@ function toggleVideoMute(videoElement)
         console.error("Invalid element passed to mute.");
         console.error(videoElement);
     }
+    if(controlTag.children[0].classList[1] === "fa-volume-up")
+    {
+        controlTag.children[0].classList.remove("fa-volume-up");
+        controlTag.children[0].classList.add("fa-volume-slash");
+    }else{
+        controlTag.children[0].classList.remove("fa-volume-slash");
+        controlTag.children[0].classList.add("fa-volume-up");
+    }
 }
 
 /**
  * Will will toggle between pause and play for the specified video.
  * @param {HTMLMediaElement} videoElement
+ * @param {HTMLButtonElement} controlTag
  */
-function toggleVideoPlay(videoElement)
+function toggleVideoPlay(videoElement, controlTag)
 {
     if(videoElement instanceof HTMLMediaElement)
     {
@@ -65,7 +75,15 @@ function toggleVideoPlay(videoElement)
         {
             videoElement.pause();
         }
+    }
 
+    if(controlTag.children[0].classList[1] === "fa-play")
+    {
+        controlTag.children[0].classList.remove("fa-play");
+        controlTag.children[0].classList.add("fa-pause");
+    }else{
+        controlTag.children[0].classList.remove("fa-pause");
+        controlTag.children[0].classList.add("fa-play");
     }
 }
 
@@ -203,7 +221,15 @@ function addListeners(videoElement, videoControls)
     }
 
     // Iterate through each child tag of the visual controls, finding each button and then binding the relevant function.
-    videoControls.childNodes.forEach((element) =>
+    /**
+     *
+     */
+    videoControls.childNodes.forEach(
+        /**
+         *
+         * @param {HTMLElement} element
+         */
+        (element) =>
     {
         /*
         videoControls is a dom object that is a static reference to the div containing all controls for the relative video.
@@ -224,12 +250,14 @@ function addListeners(videoElement, videoControls)
         {
             case "main-video-controls-play": // The Play button.
 
-                element.addEventListener("click", ()=>{toggleVideoPlay(videoElement);}); //Toggle on button click
+                console.log(element.children[0].classList);
+
+                element.addEventListener("click", ()=>{toggleVideoPlay(videoElement,element);}); //Toggle on button click
 
                 break;
             case "main-video-controls-mute": // The mute button
 
-                element.addEventListener("click", ()=>{toggleVideoMute(videoElement);}); //Toggle mute
+                element.addEventListener("click", ()=>{toggleVideoMute(videoElement, element);}); //Toggle mute
 
                 break;
             case "main-video-controls-fullscreen": //Full screen button
@@ -369,9 +397,8 @@ function addListeners(videoElement, videoControls)
                      */
                     element.children[0].innerHTML =
                         (duration > 3600 ? Math.round(videoElement.currentTime % 3600).toString().padStart(2, '0') +  ":" : "") + //Calcuate the number of hours in video, if exceeds 1 hour
-                        Math.floor(videoElement.currentTime / 60).toString().padStart(2,'0' + ":" + //Calculate minutes
-                        Math.round(videoElement.currentTime % 60)).toString().padStart(2,'0'); //Calculate seconds
-
+                        Math.floor(videoElement.currentTime / 60).toString().padStart(2,'0') + ":" + //Calculate minutes
+                        Math.round(videoElement.currentTime % 60).toString().padStart(2,'0'); //Calculate seconds
                 });
 
                 /*
@@ -409,6 +436,7 @@ function addListeners(videoElement, videoControls)
 
             case "m":case "M":
 
+                //TODO Need to add a way for the lookup to grab the mute control.
                 toggleVideoMute(videoElement);
 
                 break;
