@@ -148,6 +148,97 @@ function videoVolumeValueChange(elementToWatch, valueToChangeTo) {
     elementToWatch.innerHTML = (Math.round(valueToChangeTo.value * 100)).toString() ;
 }
 
+function addVisabilityBinding(videoElement, videoControls)
+{
+
+    switch (document.visibilityState)
+    {
+        case "hidden":
+            ///
+
+            console.log("HIdden");
+
+            if (!videoElement.paused) toggleVideoPlay(videoElement, videoControls.children[1]);
+
+
+            break;
+        case "visible":
+            //
+            console.log("VIsabike");
+            toggleVideoPlay(videoElement, videoControls.children[1]);
+
+            break;
+    }
+}
+
+function addKeyBindings(keyEvent, videoElement, videoControls) {
+    switch (keyEvent.key)
+    {
+        case " ": case "Spacebar":
+
+        toggleVideoPlay(videoElement, videoControls.children[1]);
+
+        break;
+
+        case "m":case "M":
+
+        //TODO Need to add a way for the lookup to grab the mute control.
+        toggleVideoMute(videoElement, videoControls.children[2]);
+
+        break;
+
+        case "ArrowRight": case "Right":
+
+        videoElement.currentTime += 30;
+
+        break;
+
+        case "ArrowLeft": case "Left":
+
+        videoElement.currentTime -= 10;
+
+        break;
+
+        case "f": case "F":
+
+        toggleVideoFullScreen(videoElement);
+
+        break;
+
+        case "ArrowUp": case "Up":
+
+        if(!((videoElement.volume + 0.1) > 1))
+        {
+
+            // videoElement.volume += parseFloat(0.1.toFixed()); //increment by 0.1
+            videoElement.volume = parseFloat((videoElement.volume + 0.1).toFixed(2));
+
+            videoControls.children[7].children[1].innerHTML = Math.round(videoElement.volume*100).toString(); //Change the label value
+
+            videoControls.children[7].children[0].value = videoElement.volume; //Change the slider value to the video control.
+        }
+
+        break;
+
+
+        case "ArrowDown": case "Down":
+
+        if(!((videoElement.volume-0.1) < 0))
+        {
+            // -= parseFloat(0.1.toFixed());
+
+            videoElement.volume = parseFloat((videoElement.volume - 0.1).toFixed(2));
+
+            videoControls.children[7].children[1].innerHTML = Math.round(videoElement.volume*100).toString(); //Change the label value
+            videoControls.children[7].children[0].value = videoElement.volume; //Change the slider value to the video control.
+
+        }
+
+        break;
+    }
+
+}
+
 /**
  * Will add functionality to the controls for the given video. Will also set values for the input controls based on the video.
  *
@@ -425,19 +516,21 @@ function addListeners(videoElement, videoControls)
 
     //Keyboard Shortcuts
 
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener("keydown", (event) =>
+    {
+
         switch (event.key)
         {
             case " ": case "Spacebar":
 
-                toggleVideoPlay(videoElement);
+                toggleVideoPlay(videoElement, videoControls.children[1]);
 
                 break;
 
             case "m":case "M":
 
                 //TODO Need to add a way for the lookup to grab the mute control.
-                toggleVideoMute(videoElement);
+                toggleVideoMute(videoElement, videoControls.children[2]);
 
                 break;
 
@@ -493,8 +586,7 @@ function addListeners(videoElement, videoControls)
     });
 
     //When user changes viability, to
-    document.addEventListener("visibilitychange", () =>
-    { //
+    document.addEventListener("visibilitychange", () => {
         switch (document.visibilityState)
         {
             case "hidden":
@@ -514,5 +606,6 @@ function addListeners(videoElement, videoControls)
         // if (!videoElement.paused && document.visibilityState === "hidden")
         //     toggleVideoPlay(videoElement);
         // if(document.visibilityState === "visible") toggleVideoPlay(videoElement);
+
     });
 }
