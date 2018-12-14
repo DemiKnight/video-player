@@ -89,3 +89,8 @@ docsMMU/
 #Doxygen
 html/
 latex/
+
+build/
+resources/fonts/bebasneue\.woff
+
+resources/fonts/bebasneue\.woff2

@@ -1,4 +1,6 @@
-h1{
+
+*{
+    font-family: Sans-Serif;
     /*color: aqua;*/
 }
 
@@ -51,7 +53,9 @@ h1{
 {
     flex-grow: 2;
 }
-
+.main-video-controls-currentTime{
+    text-align: right;
+}
 
 .main-video video{
     width: auto;

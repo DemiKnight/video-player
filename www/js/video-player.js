@@ -82,6 +82,12 @@ function loadVideo()
             [1] <span id="main-video-controls-volumeSlider-value">0</span>
     */
 
+    /*
+        Track whether the user has paused the video, used to decide whether the video should resume playback when returning
+        to the tab.
+
+        Ideally, this plus other video specific properties should be moved to a object of it's own and modified via a pure function.
+     */
     let intentionalPause = false;
 
     /**
@@ -308,6 +314,10 @@ function loadVideo()
         }
     }
 
+    /**
+     * When the visability state changes, normally when browser changes tabs or minimise the window,
+     * toggle playback, depending on whether the user has paused the video already.
+     */
     function toggleVideoPlaybackWhenHidden()
     {
         //If the video was intentionally paused by the user, we don't need to check the viability
